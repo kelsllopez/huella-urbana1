@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}🔒 Política de Privacidad | Huella Urbana{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/legal.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="legal-container">
+    
+    <!-- HEADER -->
+    <div class="legal-header">
+        <div class="legal-header-content">
+            <h1>
+                <i class="fas fa-shield-alt"></i>
+                Política de Privacidad
+            </h1>
+            <p class="legal-date">
+                <i class="far fa-calendar-alt"></i> 
+                Última actualización: {% now "d \d\e F \d\e Y" %}
+            </p>
+        </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="legal-content">
+        
+        <div class="legal-section">
+            <h2><i class="fas fa-info-circle"></i> 1. Información General</h2>
+            <p>
+                <strong>Huella Urbana</strong> es una plataforma ciudadana dedicada al monitoreo y reporte de incidentes 
+                relacionados con perros callejeros en Chile. Esta Política de Privacidad describe cómo recopilamos, 
+                usamos, almacenamos y protegemos tu información personal cuando utilizas nuestra plataforma.
+            </p>
+            <p>
+                Al utilizar Huella Urbana, aceptas las prácticas descritas en esta política. Si no estás de acuerdo 
+                con ella, por favor no utilices nuestros servicios.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-database"></i> 2. Información que Recopilamos</h2>
+            
+            <h3>2.1 Información de Reportes Ciudadanos</h3>
+            <p>Cuando realizas un reporte, recopilamos:</p>
+            <ul>
+                <li><strong>Ubicación geográfica:</strong> Latitud y longitud del incidente (obligatorio para mostrar en el mapa).</li>
+                <li><strong>Dirección derivada:</strong> Calle, comuna, región (obtenidos mediante geocodificación inversa).</li>
+                <li><strong>Fotografías:</strong> Imágenes del incidente (máximo 5 por reporte).</li>
+                <li><strong>Descripción del incidente:</strong> Texto descriptivo proporcionado por ti.</li>
+                <li><strong>Datos del incidente:</strong> Fecha, hora, tipo de animal afectado, cantidad de perros agresores y nivel de gravedad.</li>
+            </ul>
+
+            <h3>2.2 Información de Contacto (Opcional)</h3>
+            <p>Al crear un reporte, puedes elegir entre dos opciones:</p>
+            <ul>
+                <li><strong>Reporte Anónimo:</strong> No recopilamos ningún dato personal. No podrás hacer seguimiento posterior de tu reporte.</li>
+                <li><strong>Reporte con seguimiento:</strong> Solicitamos tu <strong>correo electrónico</strong> para notificarte cuando tu reporte sea aprobado o rechazado.</li>
+            </ul>
+            <div class="legal-note">
+                <i class="fas fa-lock"></i> 
+                <strong>Importante:</strong> Tu correo electrónico <strong>NUNCA</strong> se muestra públicamente en el mapa ni en los detalles del incidente. 
+                Solo es visible para el equipo de moderación y únicamente se usa para comunicaciones relacionadas con tu reporte.
+            </div>
+
+            <h3>2.3 Datos Técnicos de Navegación</h3>
+            <p>Cuando visitas nuestra plataforma, automáticamente recopilamos:</p>
+            <ul>
+                <li>Dirección IP</li>
+                <li>Tipo de navegador y sistema operativo</li>
+                <li>Fecha y hora de acceso</li>
+                <li>Páginas visitadas dentro de la plataforma</li>
+            </ul>
+            <p>Estos datos se usan exclusivamente para fines estadísticos y de seguridad, y no se asocian a tu identidad personal.</p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-bullseye"></i> 3. Finalidad del Tratamiento de Datos</h2>
+            <p>Utilizamos la información recopilada para:</p>
+            <ul>
+                <li><strong>Visualización pública en el mapa:</strong> La ubicación, fecha, descripción y gravedad del incidente se muestran públicamente para informar a la comunidad.</li>
+                <li><strong>Moderación de contenido:</strong> Nuestro equipo revisa los reportes para verificar su autenticidad y filtrar contenido inapropiado.</li>
+                <li><strong>Estadísticas y análisis:</strong> Generamos datos agregados y anonimizados sobre la incidencia de ataques para apoyar políticas públicas.</li>
+                <li><strong>Notificaciones:</strong> Si proporcionaste tu correo, te enviamos actualizaciones sobre el estado de tu reporte.</li>
+                <li><strong>Mejora del servicio:</strong> Analizamos datos de uso para mejorar la experiencia de usuario.</li>
+                <li><strong>Seguridad:</strong> Prevenir fraudes, abusos y actividades ilegales en la plataforma.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-share-alt"></i> 4. Compartición de Datos</h2>
+            <p><strong>No vendemos, alquilamos ni compartimos tu información personal con terceros.</strong></p>
+            <p>Podemos compartir información únicamente en las siguientes circunstancias:</p>
+            <ul>
+                <li><strong>Autoridades competentes:</strong> En caso de ser requerido por ley, orden judicial o para proteger los derechos y seguridad de nuestra comunidad.</li>
+                <li><strong>Datos públicos:</strong> Los reportes publicados (ubicación, fecha, descripción y fotos aprobadas) son visibles para todos los usuarios del mapa.</li>
+                <li><strong>Proveedores de servicios:</strong> Utilizamos servicios externos para almacenamiento de imágenes (Cloudinary) y mapas (OpenStreetMap), los cuales tienen sus propias políticas de privacidad.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-image"></i> 5. Contenido Sensible y Fotografías</h2>
+            <p>
+                Entendemos que algunos reportes pueden contener imágenes gráficas o sensibles (sangre, heridas). 
+                Nuestro equipo de moderación revisa todas las imágenes y puede:
+            </p>
+            <ul>
+                <li><strong>Censurar:</strong> Aplicar un filtro de pixelado sobre la imagen con advertencia previa.</li>
+                <li><strong>Ocultar:</strong> Retirar completamente la fotografía si viola nuestras políticas de contenido.</li>
+            </ul>
+            <p>
+                Al subir una fotografía, declaras que tienes el derecho de compartirla y que no viola la privacidad 
+                de terceros. Nos reservamos el derecho de rechazar o eliminar cualquier contenido que consideremos inapropiado.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-lock"></i> 6. Seguridad de los Datos</h2>
+            <p>
+                Implementamos medidas de seguridad técnicas y organizativas para proteger tu información personal 
+                contra acceso no autorizado, pérdida, alteración o destrucción. Sin embargo, debes tener en cuenta 
+                que ningún método de transmisión por Internet o almacenamiento electrónico es 100% seguro.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-cookie-bite"></i> 7. Cookies y Tecnologías Similares</h2>
+            <p>
+                Utilizamos cookies esenciales para el funcionamiento de la plataforma (como mantener la sesión del 
+                mapa y recordar preferencias de visualización). No utilizamos cookies de seguimiento publicitario 
+                ni de terceros con fines comerciales.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-user-check"></i> 8. Tus Derechos (Ley 19.628)</h2>
+            <p>De acuerdo con la legislación chilena sobre Protección de la Vida Privada, tienes derecho a:</p>
+            <ul>
+                <li><strong>Acceso:</strong> Solicitar qué datos tuyos tenemos almacenados.</li>
+                <li><strong>Rectificación:</strong> Corregir datos inexactos o incompletos.</li>
+                <li><strong>Cancelación:</strong> Solicitar la eliminación de tus datos personales.</li>
+                <li><strong>Oposición:</strong> Oponerte al tratamiento de tus datos para fines específicos.</li>
+            </ul>
+            <p>
+                Para ejercer estos derechos, contáctanos a través de: 
+                <a href="mailto:privacidad@huellaurbana.cl">privacidad@huellaurbana.cl</a>
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-child"></i> 9. Menores de Edad</h2>
+            <p>
+                Nuestros servicios no están dirigidos a menores de 14 años. No recopilamos intencionalmente 
+                información personal de menores. Si eres padre, madre o tutor y crees que un menor nos ha 
+                proporcionado información, contáctanos para eliminarla de inmediato.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-globe"></i> 10. Transferencia Internacional de Datos</h2>
+            <p>
+                Al utilizar servicios como Cloudinary para el almacenamiento de imágenes, algunos datos técnicos 
+                pueden ser transferidos y procesados en servidores ubicados fuera de Chile. Nos aseguramos de que 
+                dichos proveedores cumplan con estándares de seguridad adecuados y sus propias políticas de privacidad.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-clock"></i> 11. Conservación de Datos</h2>
+            <p>
+                Los reportes públicos (ubicación, fecha, descripción y gravedad) se conservan indefinidamente para 
+                mantener el historial de incidentes y su valor estadístico. Los correos electrónicos asociados a 
+                reportes con seguimiento se conservan mientras el reporte esté activo o hasta que solicites su eliminación.
+            </p>
+            <p>
+                Los datos técnicos de navegación (IP, navegador) se conservan por un período máximo de 12 meses 
+                para fines de seguridad y análisis.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-pen"></i> 12. Cambios a esta Política</h2>
+            <p>
+                Podemos actualizar esta Política de Privacidad periódicamente para reflejar cambios en nuestras 
+                prácticas o por motivos legales. La versión actualizada estará disponible en esta página con la 
+                fecha de modificación. Te recomendamos revisar esta política regularmente.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-envelope"></i> 13. Contacto</h2>
+            <p>Si tienes preguntas, dudas o reclamos sobre esta Política de Privacidad, no dudes en contactarnos:</p>
+            <div class="contact-box">
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:privacidad@huellaurbana.cl">privacidad@huellaurbana.cl</a></p>
+                <p><i class="fas fa-globe"></i> <strong>Sitio web:</strong> www.huellaurbana.cl</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="legal-footer">
+        <p>
+            <i class="fas fa-paw"></i> 
+            Huella Urbana - Plataforma Ciudadana de Monitoreo de Ataques de Perros Callejeros
+        </p>
+        <p>
+            <a href="{% url 'terminos' %}">
+                <i class="fas fa-file-contract"></i> Términos y Condiciones
+            </a>
+            <span class="separator">|</span>
+            <a href="{% url 'index' %}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}📝 Registro | Huella Urbana{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/registro.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+
+    {% if messages %}
+    <div class="django-messages">
+        {% for message in messages %}
+        <div class="django-alert alert-{{ message.tags }}" role="alert">
+            {% if message.tags == 'error' or message.tags == 'danger' %}
+                <i class="fas fa-exclamation-circle"></i>
+            {% elif message.tags == 'success' %}
+                <i class="fas fa-check-circle"></i>
+            {% elif message.tags == 'warning' %}
+                <i class="fas fa-exclamation-triangle"></i>
+            {% else %}
+                <i class="fas fa-info-circle"></i>
+            {% endif %}
+            <span>{{ message }}</span>
+            <button class="close-btn" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+<div class="registro-wrapper">
+
+    <div class="register-container">
+        
+        <button class="back-btn" onclick="window.location.href='{% url 'login' %}'" title="Volver al login">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+
+        <div class="logo-container">
+            <div class="logo-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h1 class="logo-title">Crear Cuenta</h1>
+            <p class="logo-subtitle">Únete a la comunidad Huella Urbana</p>
+        </div>
+
+        <form id="registerForm" method="POST" action="{% url 'registro' %}">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label class="form-label">Nombre de Usuario</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" class="form-control-custom" id="nombre" name="nombre" placeholder="mi_usuario123" required minlength="3">
+                </div>
+                <div class="validation-message" id="nombreValidation"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Correo Electrónico</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" class="form-control-custom" id="email" name="email" placeholder="correo@ejemplo.com" required>
+                </div>
+                <div class="validation-message" id="emailValidation"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Contraseña</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" class="form-control-custom" id="password" name="password" placeholder="Mínimo 8 caracteres" required minlength="8">
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('password')"></i>
+                </div>
+                <div class="password-strength" id="passwordStrength">
+                    <div class="strength-bar">
+                        <div class="strength-fill"></div>
+                    </div>
+                    <span class="strength-text"></span>
+                </div>
+                <div class="validation-message" id="passwordValidation"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Confirmar Contraseña</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" class="form-control-custom" id="confirmPassword" name="confirm_password" placeholder="Repite tu contraseña" required minlength="8">
+                    <i class="fas fa-eye toggle-password" onclick="togglePassword('confirmPassword')"></i>
+                </div>
+                <div class="validation-message" id="passwordMatch"></div>
+            </div>
+
+            <div class="terms-checkbox">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">
+                    Acepto los <a href="#">Términos y Condiciones</a> y la <a href="#">Política de Privacidad</a> de Huella Urbana
+                </label>
+            </div>
+            <div class="validation-message" id="termsValidation"></div>
+
+            <button type="submit" class="btn-register" id="btnRegister">
+                <i class="fas fa-user-plus"></i> Crear Mi Cuenta
+            </button>
+
+        </form>
+
+        <!-- DIVIDER -->
+        <div class="divider">
+            <span>O regístrate con</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <button style="padding: 0.8rem; border-radius: 12px; border: 3px solid #E5E7EB; background: white; cursor: pointer; transition: all 0.3s ease; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" onclick="registerWithGoogle()">
+                <i class="fab fa-google" style="color: #EA4335; font-size: 1.3rem;"></i>
+                Google
+            </button>
+            <button style="padding: 0.8rem; border-radius: 12px; border: 3px solid #E5E7EB; background: white; cursor: pointer; transition: all 0.3s ease; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" onclick="registerWithFacebook()">
+                <i class="fab fa-facebook-f" style="color: #1877F2; font-size: 1.3rem;"></i>
+                Facebook
+            </button>
+        </div>
+
+        <div class="login-link">
+            <p>¿Ya tienes una cuenta? 
+                <a href="{% url 'login' %}">Inicia sesión aquí</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="{% static 'js/registro.js' %}"></script>
+{% endblock %}

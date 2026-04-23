@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}📊 Estadísticas | Huella Urbana{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/estadisticas.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="stats-hero">
+    <div class="container">
+        <h1 class="stats-main-title">
+            📊 Panel de Estadísticas
+        </h1>
+        <p class="stats-subtitle">
+            Análisis detallado de incidentes en <span id="ubicacionTitulo">{{ titulo_ubicacion|default:"Todo Chile" }}</span>
+        </p>
+
+        <div class="stats-cards-grid">
+            <div class="stat-card-big fade-in-up">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-number" id="statTotal">{{ total_reportes }}</div>
+                <div class="stat-label">Reportes Totales</div>
+            </div>
+            
+            <div class="stat-card-big fade-in-up" style="animation-delay: 0.1s;">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-number" id="statVerificados">{{ verificados }}</div>
+                <div class="stat-label">Verificados</div>
+            </div>
+            
+            <div class="stat-card-big fade-in-up" style="animation-delay: 0.2s;">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-number" id="statGraves">{{ ataques_graves }}</div>
+                <div class="stat-label">Ataques Graves</div>
+            </div>
+            
+            <div class="stat-card-big fade-in-up" style="animation-delay: 0.3s;">
+                <div class="stat-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="stat-number" id="statSectores">{{ sectores_afectados }}</div>
+                <div class="stat-label">Ciudades Afectadas</div>
+            </div>
+
+            <!-- 🆕 NUEVA TARJETA: Ataques a Personas -->
+            <div class="stat-card-big fade-in-up" style="animation-delay: 0.4s;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #EF4444, #DC2626);">
+                    <i class="fas fa-user-injured"></i>
+                </div>
+                <div class="stat-number" id="statPersonas">{{ ataques_personas|default:0 }}</div>
+                <div class="stat-label">Ataques a Personas</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container stats-container">
+    
+    <!-- Barra de filtro por ubicación -->
+    <div class="filter-bar">
+        <div class="filter-bar-content">
+            <div class="filter-location-badge">
+                <span class="badge-ubicacion" id="ubicacionActualLabel">
+                    <i class="fas fa-map-pin"></i> 
+                    Mostrando datos de: <strong>{{ titulo_ubicacion|default:"Todo Chile" }}</strong>
+                </span>
+            </div>
+            <div class="filter-actions">
+                {% if filtrando_por_ciudad %}
+                <button class="btn-clear-stats" id="btnLimpiarFiltro">
+                    <i class="fas fa-times"></i> Limpiar filtro
+                </button>
+                {% endif %}
+                <button class="btn-gps-stats" id="btnGPSStats">
+                    <i class="fas fa-location-arrow"></i> Filtrar por mi ubicación
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="custom-tabs">
+        <button class="tab-btn active" data-tab="general">
+            <i class="fas fa-chart-line"></i> General
+        </button>
+        <button class="tab-btn" data-tab="temporal">
+            <i class="fas fa-calendar"></i> Temporal
+        </button>
+        <button class="tab-btn" data-tab="geografico">
+            <i class="fas fa-map"></i> Geográfico
+        </button>
+        <button class="tab-btn" data-tab="insights">
+            <i class="fas fa-lightbulb"></i> Insights
+        </button>
+    </div>
+
+    <!-- Tab General -->
+    <div id="tab-general" class="tab-content active">
+        <div class="charts-grid">
+            
+            <div class="chart-card fade-in-up">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="chart-title">
+                        <h3>Reportes por Mes</h3>
+                        <small>Evolución mensual de incidentes</small>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartBarras"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card fade-in-up" style="animation-delay: 0.1s;">
+                <div class="chart-header">
+                    <div class="chart-icon gradient-danger">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="chart-title">
+                        <h3>Distribución por Gravedad</h3>
+                        <small>Clasificación de ataques</small>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartDona"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card full-width fade-in-up" style="animation-delay: 0.2s;">
+                <div class="chart-header">
+                    <div class="chart-icon gradient-success">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="chart-title">
+                        <h3>Top 10 Ciudades Más Afectadas</h3>
+                        <small>Zonas con mayor cantidad de incidentes</small>
+                    </div>
+                </div>
+
+                <div class="ranking-table">
+                    {% for sector in sectores_ranking %}
+                    <div class="ranking-row">
+                        <div class="ranking-position" 
+                             data-position="{{ forloop.counter }}"
+                             {% if forloop.counter == 1 %}style="background: linear-gradient(135deg, #EF4444, #DC2626);"
+                             {% elif forloop.counter == 2 %}style="background: linear-gradient(135deg, #F59E0B, #D97706);"
+                             {% elif forloop.counter == 3 %}style="background: linear-gradient(135deg, #8B5CF6, #6D28D9);"
+                             {% elif forloop.counter == 4 %}style="background: linear-gradient(135deg, #10B981, #059669);"
+                             {% else %}style="background: #6B7280;"{% endif %}>
+                            {{ forloop.counter }}
+                        </div>
+                        <div class="ranking-info">
+                            <strong>{{ sector.sector }}</strong><br>
+                            <small class="text-muted">Ciudad</small>
+                        </div>
+                        <div class="ranking-value">{{ sector.total }}</div>
+                    </div>
+                    {% empty %}
+                    <p class="empty-ranking-message">No hay datos disponibles para esta ubicación</p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Tab Temporal -->
+    <div id="tab-temporal" class="tab-content">
+        <div class="charts-grid">
+            
+            <div class="chart-card full-width fade-in-up">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="chart-title">
+                        <h3>Tendencia Temporal</h3>
+                        <small>Evolución de incidentes en el tiempo</small>
+                    </div>
+                </div>
+                <div class="chart-container" style="height: 350px;">
+                    <canvas id="chartLinea"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card fade-in-up">
+                <div class="chart-header">
+                    <div class="chart-icon gradient-warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="chart-title">
+                        <h3>Incidentes por Hora del Día</h3>
+                        <small>Horarios más frecuentes</small>
+                    </div>
+                </div>
+                <div class="chart-container" style="height: 280px;">
+                    <canvas id="chartHoras"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card fade-in-up">
+                <div class="chart-header">
+                    <div class="chart-icon gradient-secondary">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <div class="chart-title">
+                        <h3>Incidentes por Día de la Semana</h3>
+                        <small>Distribución semanal</small>
+                    </div>
+                </div>
+                <div class="chart-container" style="height: 280px;">
+                    <canvas id="chartDias"></canvas>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Tab Geográfico -->
+    <div id="tab-geografico" class="tab-content">
+        <div class="charts-grid">
+            
+            <div class="chart-card full-width fade-in-up">
+                <div class="chart-header">
+                    <div class="chart-icon gradient-success">
+                        <i class="fas fa-map"></i>
+                    </div>
+                    <div class="chart-title">
+                        <h3>Distribución Geográfica</h3>
+                        <small>Incidentes por ciudad</small>
+                    </div>
+                </div>
+
+                <div class="progress-list">
+                    {% for sector in sectores_ranking %}
+                    {% widthratio sector.total max_sector 100 as width_percent %}
+                    <div class="progress-item">
+                        <div class="progress-label">
+                            <span><i class="fas fa-city"></i> {{ sector.sector }}</span>
+                            <span>{{ sector.total }} incidentes</span>
+                        </div>
+                        <div class="progress-custom">
+                            <div class="progress-bar-custom" 
+                                 style="width: {{ width_percent }}%;"
+                                 data-rank="{{ forloop.counter }}">
+                                {{ width_percent }}%
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="empty-progress-message">No hay datos geográficos disponibles</p>
+                    {% endfor %}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Tab Insights -->
+    <div id="tab-insights" class="tab-content">
+        <div class="charts-grid">
+            
+            <div class="chart-card full-width fade-in-up">
+                <div class="chart-header">
+                    <div class="chart-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="chart-title">
+                        <h3>Métricas de Calidad</h3>
+                        <small>Indicadores de desempeño del sistema</small>
+                    </div>
+                </div>
+
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <div class="insight-icon success">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h2 class="insight-value success">{{ tasa_aprobacion }}%</h2>
+                        <p class="insight-label">Tasa de Aprobación</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-icon primary">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h2 class="insight-value primary">24h</h2>
+                        <p class="insight-label">Tiempo de Respuesta</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-icon secondary">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h2 class="insight-value secondary">{{ porcentaje_con_foto }}%</h2>
+                        <p class="insight-label">Con Fotografías</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-icon warning">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h2 class="insight-value warning">{{ verificados }}</h2>
+                        <p class="insight-label">Reportes Verificados</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="{% static 'js/estadisticas.js' %}"></script>
+<script>
+    // Datos desde Django para los gráficos
+    window.STATS_DATA = {
+        meses: {{ meses|safe }},
+        totalesMes: {{ totales_mes|safe }},
+        graves: {{ graves }},
+        moderados: {{ moderados }},
+        leves: {{ leves }},
+        ataques_personas: {{ ataques_personas|default:0 }},  // 🆕 NUEVO
+        mesesTendencia: {{ meses_tendencia|safe }},
+        totalesTendencia: {{ totales_tendencia|safe }},
+        etiquetasHoras: {{ etiquetas_horas|safe }},
+        totalesHoras: {{ totales_horas|safe }},
+        diasOrdenados: {{ dias_ordenados|safe }},
+        totalesDias: {{ totales_dias|safe }}
+    };
+    
+    // URLs para filtros
+    window.STATS_URLS = {
+        limpiarFiltro: "{{ request.path }}"
+    };
+</script>
+{% endblock %}

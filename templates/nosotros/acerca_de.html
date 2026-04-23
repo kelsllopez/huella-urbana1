@@ -1,0 +1,354 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Acerca de | Huella Urbana - Recolector de Ataques{% endblock %}
+
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/acerca_de.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="about-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="badge-acerca">🐾 Plataforma en Desarrollo</span>
+                <h1>Recolector de Ataques de Perros Callejeros</h1>
+                <p class="hero-subtitle">Sistema de monitoreo ciudadano para la prevención y análisis de incidentes con animales callejeros en Chile</p>
+                <div class="hero-actions">
+                    <a href="{% url 'nuevo_reporte' %}" class="btn-hero-primary">
+                        <i class="fas fa-plus-circle"></i> Reportar Incidente
+                    </a>
+                    <a href="#como-funciona" class="btn-hero-secondary">
+                        <i class="fas fa-info-circle"></i> Cómo Funciona
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center">
+                <div class="hero-illustration">
+                    <i class="fas fa-shield-dog"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROBLEMÁTICA -->
+<section class="section-problema">
+    <div class="container">
+        <div class="section-header">
+            <h2>La Problemática</h2>
+            <p>Entendiendo el contexto de los perros callejeros en Chile</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Datos a Nivel Nacional</h3>
+                    <ul>
+                        <li>Según la SUBDERE, existen más de <strong>340.000 perros callejeros</strong> en Chile</li>
+                        <li>El <strong>60% de las mordeduras</strong> registradas son a otros animales domésticos</li>
+                        <li>Solo el <strong>15% de los incidentes</strong> son reportados a las autoridades</li>
+                        <li>Las municipalidades carecen de sistemas unificados de registro de ataques</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-card">
+                    <div class="card-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Consecuencias Directas</h3>
+                    <ul>
+                        <li><strong>Lesiones graves</strong> a mascotas con dueño responsable</li>
+                        <li><strong>Propagación de enfermedades</strong> zoonóticas entre animales</li>
+                        <li>Falta de <strong>datos confiables</strong> para diseñar políticas públicas efectivas</li>
+                        <li><strong>Estrés comunitario</strong> en sectores con alta presencia de jaurías</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OBJETIVOS DEL PROYECTO -->
+<section class="section-objetivos">
+    <div class="container">
+        <div class="section-header">
+            <h2>Objetivos del Proyecto</h2>
+            <p>Qué buscamos lograr con esta plataforma</p>
+        </div>
+        
+        <div class="objetivos-grid">
+            <div class="objetivo-card">
+                <span class="objetivo-numero">01</span>
+                <h4>Centralizar Información</h4>
+                <p>Crear una base de datos unificada y georreferenciada de ataques de perros callejeros a nivel nacional.</p>
+            </div>
+            <div class="objetivo-card">
+                <span class="objetivo-numero">02</span>
+                <h4>Visibilizar Zonas Críticas</h4>
+                <p>Identificar mediante mapas de calor los sectores con mayor incidencia de ataques para focalizar esfuerzos.</p>
+            </div>
+            <div class="objetivo-card">
+                <span class="objetivo-numero">03</span>
+                <h4>Generar Conciencia</h4>
+                <p>Educar a la comunidad sobre tenencia responsable y protocolos de acción ante ataques de perros callejeros.</p>
+            </div>
+            <div class="objetivo-card">
+                <span class="objetivo-numero">04</span>
+                <h4>Apoyar la Gestión Pública</h4>
+                <p>Proveer datos concretos a municipios y autoridades para la toma de decisiones basadas en evidencia.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NUESTRA SOLUCIÓN -->
+<section class="section-solucion">
+    <div class="container">
+        <div class="section-header">
+            <h2>Nuestra Solución</h2>
+            <p>Una plataforma integral para el registro, análisis y prevención</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fas fa-map-marked-alt"></i>
+                <h4>Geolocalización Precisa</h4>
+                <p>Cada reporte incluye coordenadas GPS exactas del incidente, permitiendo crear mapas de calor de zonas críticas.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-camera"></i>
+                <h4>Evidencia Fotográfica</h4>
+                <p>Sistema de verificación con imágenes del incidente para garantizar la autenticidad de cada reporte.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-chart-pie"></i>
+                <h4>Análisis Estadístico</h4>
+                <p>Dashboard con métricas: frecuencia por horario, tipos de animales afectados, gravedad de ataques, y más.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-building"></i>
+                <h4>Informes para Autoridades</h4>
+                <p>Generación de reportes ejecutivos con datos agregados y anonimizados para apoyar políticas municipales.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-bell"></i>
+                <h4>Alertas Comunitarias</h4>
+                <p>Notificaciones a vecinos sobre incidentes en su sector para que tomen precauciones con sus mascotas.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-balance-scale"></i>
+                <h4>Marco Legal</h4>
+                <p>Alineado con la Ley 21.020 de Tenencia Responsable de Mascotas y Animales de Compañía (Ley Cholito).</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ¿CÓMO FUNCIONA? -->
+<section class="section-como-funciona" id="como-funciona">
+    <div class="container">
+        <div class="section-header">
+            <h2>¿Cómo Funciona?</h2>
+            <p>Un proceso simple y transparente en 4 pasos</p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Reporta el Incidente</h4>
+                    <p>Completa un formulario con la ubicación exacta, descripción del ataque, y adjunta fotografías como evidencia.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Revisión por Moderadores</h4>
+                    <p>Nuestro equipo verifica la información y las imágenes para asegurar la calidad y veracidad del reporte.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Publicación en el Mapa</h4>
+                    <p>Una vez aprobado, el incidente se visualiza en el mapa interactivo disponible para toda la comunidad.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>Acción y Prevención</h4>
+                    <p>Los datos agregados permiten a vecinos y autoridades tomar medidas informadas de prevención y control.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PARA QUIÉN ES ÚTIL -->
+<section class="section-publico">
+    <div class="container">
+        <div class="section-header">
+            <h2>¿Para Quién es Útil?</h2>
+            <p>La plataforma beneficia a distintos actores de la comunidad</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="publico-card">
+                    <div class="publico-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h4>Vecinos</h4>
+                    <p>Conocen las zonas de riesgo cerca de su hogar y pueden tomar precauciones al pasear sus mascotas.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="publico-card">
+                    <div class="publico-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h4>Municipios</h4>
+                    <p>Acceden a datos reales para planificar operativos de control animal y políticas de tenencia responsable.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="publico-card">
+                    <div class="publico-icon">
+                        <i class="fas fa-paw"></i>
+                    </div>
+                    <h4>Organizaciones Animalistas</h4>
+                    <p>Utilizan la información para focalizar campañas de esterilización y rescate en zonas críticas.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="publico-card">
+                    <div class="publico-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h4>Investigadores</h4>
+                    <p>Acceden a datos anonimizados para estudios epidemiológicos y de comportamiento animal.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- EQUIPO Y TRANSPARENCIA -->
+<section class="section-equipo">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="section-header text-start">
+                    <h2>¿Quiénes Somos?</h2>
+                    <p>Un equipo multidisciplinario comprometido</p>
+                </div>
+                <div class="team-compact">
+                    <div class="team-member-row">
+                        <div class="member-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="member-info">
+                            <strong>Coordinación General</strong>
+                            <span>Gestión del proyecto, alianzas estratégicas y vinculación con municipios</span>
+                        </div>
+                    </div>
+                    <div class="team-member-row">
+                        <div class="member-avatar dev">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="member-info">
+                            <strong>Desarrollo Tecnológico</strong>
+                            <span>Diseño y mantención de la plataforma web, base de datos y seguridad</span>
+                        </div>
+                    </div>
+                    <div class="team-member-row">
+                        <div class="member-avatar mod">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="member-info">
+                            <strong>Moderación de Contenido</strong>
+                            <span>Verificación de reportes, control de calidad y gestión de la comunidad</span>
+                        </div>
+                    </div>
+                    <div class="team-member-row">
+                        <div class="member-avatar vol">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <div class="member-info">
+                            <strong>Voluntariado</strong>
+                            <span>Difusión comunitaria, apoyo en terreno y educación sobre tenencia responsable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="section-header text-start">
+                    <h2>Nuestro Compromiso</h2>
+                    <p>Principios que guían nuestro trabajo</p>
+                </div>
+                <div class="transparencia-list">
+                    <div class="trans-item">
+                        <i class="fas fa-lock"></i>
+                        <div>
+                            <strong>Privacidad de Datos</strong>
+                            <p>Protegemos la identidad de los reportantes según la Ley 19.628 de Protección de Datos Personales</p>
+                        </div>
+                    </div>
+                    <div class="trans-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Verificación Rigurosa</strong>
+                            <p>Cada reporte pasa por un proceso de validación antes de ser publicado en la plataforma</p>
+                        </div>
+                    </div>
+                    <div class="trans-item">
+                        <i class="fas fa-code-branch"></i>
+                        <div>
+                            <strong>Código Abierto</strong>
+                            <p>El código fuente está disponible para auditoría pública y contribuciones en GitHub</p>
+                        </div>
+                    </div>
+                    <div class="trans-item">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        <div>
+                            <strong>Sin Fines de Lucro</strong>
+                            <p>Proyecto comunitario enfocado en el bienestar animal y la seguridad pública</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="section-cta">
+    <div class="container">
+        <div class="cta-box">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h3>¿Presenciaste un ataque? Tu reporte puede salvar a otra mascota</h3>
+                    <p>Ayúdanos a construir la primera base de datos colaborativa de ataques de perros callejeros en Chile.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="{% url 'nuevo_reporte' %}" class="btn-cta">
+                        <i class="fas fa-plus-circle"></i> Crear Reporte Ahora
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

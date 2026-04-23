@@ -1,0 +1,239 @@
+{% load static %}
+{% load l10n %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}🐾 Huella Urbana{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+
+        <a class="navbar-brand" href="{% url 'index' %}">🐾 Huella Urbana</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <div class="d-flex gap-2 align-items-center flex-wrap">
+
+                {% if user.is_authenticated %}
+
+                    {# ================= ADMINISTRADOR ================= #}
+                    {% if user.is_superuser or user.is_staff or user.perfil.rol == 'admin' %}
+                        <a href="{% url 'nuevo_reporte' %}" class="nav-btn btn-action">
+                            <i class="fas fa-plus"></i> Nuevo Reporte
+                        </a>
+
+                        <a href="{% url 'panel_moderador' %}" class="nav-btn">
+                            <i class="fas fa-user-shield"></i> Moderar
+                        </a>
+
+                        <a href="{% url 'usuarios_list' %}" class="nav-btn">
+                            <i class="fas fa-users-cog"></i> Usuarios
+                        </a>
+
+                        <a href="{% url 'mapa' %}" class="nav-btn">
+                            <i class="fas fa-map-marked-alt"></i> Mapa
+                        </a>
+
+                        <a href="{% url 'estadisticas' %}" class="nav-btn">
+                            <i class="fas fa-chart-bar"></i> Estadísticas
+                        </a>
+
+                        <a href="{% url 'consultar_reporte' %}" class="nav-btn">
+                            <i class="fas fa-search"></i> Consultar
+                        </a>
+
+                        <a href="{% url 'logout' %}" class="nav-btn">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </a>
+
+                    {# ================= MODERADOR ================= #}
+                    {% elif user.perfil.rol == 'moderador' %}
+                        <a href="{% url 'nuevo_reporte' %}" class="nav-btn btn-action">
+                            <i class="fas fa-plus"></i> Nuevo Reporte
+                        </a>
+
+                        <a href="{% url 'panel_moderador' %}" class="nav-btn">
+                            <i class="fas fa-user-shield"></i> Moderar
+                            <span class="badge-notification">{{ pendientes_global }}</span>
+                        </a>
+
+                        <a href="{% url 'mapa' %}" class="nav-btn">
+                            <i class="fas fa-map-marked-alt"></i> Mapa
+                        </a>
+
+                        <a href="{% url 'estadisticas' %}" class="nav-btn">
+                            <i class="fas fa-chart-bar"></i> Estadísticas
+                        </a>
+
+                        <a href="{% url 'consultar_reporte' %}" class="nav-btn">
+                            <i class="fas fa-search"></i> Consultar
+                        </a>
+
+                        <a href="{% url 'logout' %}" class="nav-btn">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </a>
+                    {% endif %}
+
+                {% else %} 
+                    {# ==================== VISITANTE (SIN LOGIN VISIBLE) ==================== #}
+                    <a href="{% url 'nuevo_reporte' %}" class="nav-btn btn-action">
+                        <i class="fas fa-plus"></i> Nuevo Reporte
+                    </a>
+                    
+                    <a href="{% url 'mapa' %}" class="nav-btn">
+                        <i class="fas fa-map-marked-alt"></i> Mapa
+                    </a>
+
+                    <a href="{% url 'estadisticas' %}" class="nav-btn">
+                        <i class="fas fa-chart-bar"></i> Estadísticas
+                    </a>
+
+                    <a href="{% url 'consultar_reporte' %}" class="nav-btn">
+                        <i class="fas fa-search"></i> Consultar Estado
+                    </a>
+
+                    <a href="{% url 'contacto' %}" class="nav-btn">
+                        <i class="fas fa-envelope"></i> Contacto
+                    </a>
+
+                    {# ELIMINADO: Ingresar - Solo personal autorizado conoce /login/ #}
+
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+
+<footer class="footer-custom mt-5 py-5" style="background:#111827; color:white;">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6 mb-4">
+                <div class="footer-brand mb-3" style="font-size:1.5rem; font-weight:700;">
+                    🐾 Huella Urbana
+                </div>
+                <p style="opacity:0.8;">
+                    Plataforma de monitoreo ciudadano para la prevención de ataques de perros
+                    y promoción de la tenencia responsable.
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <h5 class="mb-3">Enlaces Rápidos</h5>
+
+                <div class="row">
+                    <div class="col-6">
+
+                        <a href="{% url 'index' %}" class="footer-link d-block mb-2">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+
+                        <a href="{% url 'mapa' %}" class="footer-link d-block mb-2">
+                            <i class="fas fa-map"></i> Mapa
+                        </a>
+
+                        <a href="{% url 'estadisticas' %}" class="footer-link d-block mb-2">
+                            <i class="fas fa-chart-bar"></i> Estadísticas
+                        </a>
+
+                        <a href="{% url 'consultar_reporte' %}" class="footer-link d-block mb-2">
+                            <i class="fas fa-search"></i> Consultar mis reportes
+                        </a>
+
+                        {% if user.is_authenticated %}
+                            {% if user.is_superuser or user.is_staff or user.perfil.rol == 'admin' %}
+                                <a href="{% url 'usuarios_list' %}" class="footer-link d-block mb-2">
+                                    <i class="fas fa-users-cog"></i> Gestión de Usuarios
+                                </a>
+                                <a href="{% url 'panel_moderador' %}" class="footer-link d-block mb-2">
+                                    <i class="fas fa-user-shield"></i> Panel de Moderación
+                                </a>
+                            {% elif user.perfil.rol == 'moderador' %}
+                                <a href="{% url 'panel_moderador' %}" class="footer-link d-block mb-2">
+                                    <i class="fas fa-user-shield"></i> Panel de Moderación
+                                </a>
+                            {% endif %}
+                        {% endif %}
+
+                    </div>
+
+                    <div class="col-6">
+
+                        <a href="{% url 'privacidad' %}" class="footer-link d-block mb-2">
+                            <i class="fas fa-lock"></i> Política de Privacidad
+                        </a>
+                        
+                        <a href="{% url 'terminos' %}" class="footer-link d-block mb-2">
+                            <i class="fas fa-file-contract"></i> Términos y Condiciones
+                        </a>
+                        
+                        <a href="{% url 'contacto' %}" class="footer-link d-block mb-2">
+                            <i class="fas fa-envelope"></i> Contacto
+                        </a>
+
+                        <a href="{% url 'acerca' %}" class="footer-link d-block mb-2">
+                            <i class="fas fa-info-circle"></i> Acerca de
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr style="border-color:rgba(255,255,255,0.2); margin:2rem 0 1rem;">
+
+        <div class="text-center" style="opacity:0.7;">
+            © {% now "Y" %} Huella Urbana | Desarrollado por <strong>KELS</strong>
+        </div>
+
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if messages %}
+<script>
+    {% for message in messages %}
+    Swal.fire({
+        icon: "{% if 'error' in message.tags %}error{% elif 'success' in message.tags %}success{% elif 'warning' in message.tags %}warning{% else %}info{% endif %}",
+        title: "{{ message|escapejs }}",
+        confirmButtonColor: '#8B5CF6'
+    });
+    {% endfor %}
+</script>
+{% endif %}
+
+{% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

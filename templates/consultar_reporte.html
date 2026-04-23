@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}🔍 Consultar Mis Reportes | Huella Urbana{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/consultar_reportes.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="consult-wrapper">
+    <div class="consult-container">
+        
+        <!-- Header -->
+        <div class="consult-header">
+            <div class="consult-header-icon">
+                <i class="fas fa-paw"></i>
+            </div>
+            <h1>Consulta tus Reportes</h1>
+            <p>Ingresa tu correo electrónico para ver el estado de todos los incidentes que has reportado</p>
+        </div>
+
+        <!-- Card de búsqueda -->
+        <div class="search-card">
+            <form id="consultaForm">
+                {% csrf_token %}
+                <div class="input-group-custom">
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" 
+                               name="email" 
+                               class="email-input-modern" 
+                               placeholder="tu@email.com" 
+                               required
+                               id="emailInput"
+                               autocomplete="email"
+                               data-validate="email">
+                    </div>
+                    <button type="submit" class="btn-search-modern" id="btnConsultar">
+                        <i class="fas fa-search"></i>
+                        <span>Buscar reportes</span>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="privacy-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span><strong>Tu privacidad es importante:</strong> Solo mostramos reportes asociados a este email. Los reportes anónimos no se pueden recuperar.</span>
+            </div>
+        </div>
+
+        <!-- Sección de resultados -->
+        <div class="results-section" id="resultadosContainer">
+            <div class="results-header-modern">
+                <i class="fas fa-clipboard-list"></i>
+                <h2>Tus Reportes</h2>
+                <span class="results-count" id="resultsCount"></span>
+            </div>
+            <div id="resultadosList" class="reportes-grid"></div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- Modal de detalles -->
+<div class="modal-modern" id="modalDetalle">
+    <div class="modal-modern-content">
+        <div class="modal-modern-header">
+            <h3>
+                <i class="fas fa-file-alt"></i>
+                <span id="modalTitulo">Detalles del Reporte</span>
+            </h3>
+            <button class="modal-modern-close" id="btnCerrarModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-modern-body" id="modalBody">
+            <!-- Contenido dinámico -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'js/consultar_reportes.js' %}"></script>
+<script>
+    // Configuración de URLs desde Django
+    window.URLS = {
+        consultarAjax: '{% url "consultar_reportes_ajax" %}',
+        detalleAjax: '{% url "detalle_reporte_ajax" 0 %}',
+        mapa: '{% url "mapa" %}'
+    };
+</script>
+{% endblock %}

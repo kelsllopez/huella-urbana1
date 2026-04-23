@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}🔐 Iniciar Sesión | Huella Urbana{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<style>
+    /* Estilos mínimos por si el CSS externo falla */
+    .error-message {
+        color: #EF4444;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: none;
+    }
+    .error-message.show {
+        display: block;
+    }
+    .form-control-custom.error {
+        border-color: #EF4444 !important;
+        background-color: #FEF2F2 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="login-wrapper">
+    <div class="login-container">
+
+        <button class="back-btn" onclick="window.location.href='{% url 'index' %}'">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+
+        <div class="logo-container">
+            <div class="logo-icon">
+                <i class="fas fa-paw"></i>
+            </div>
+            <h1 class="logo-title">Huella Urbana</h1>
+            <p class="logo-subtitle">Acceso para Moderadores y Administradores</p>
+        </div>
+
+        <!-- Mensaje informativo -->
+        <div class="info-message" style="background: #EEF2FF; border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; color: #4338CA; font-size: 0.9rem; border: 1px solid #C7D2FE;">
+            <i class="fas fa-shield-alt"></i>
+            <strong>Área restringida:</strong> Solo para personal autorizado.
+        </div>
+
+        <form method="POST" id="loginForm">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label" for="username">Correo o Usuario</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-user input-icon"></i>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username" 
+                        class="form-control-custom" 
+                        placeholder="usuario o correo@ejemplo.com"
+                        value="{{ username|default:'' }}"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+                <div class="error-message" id="username-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Contraseña</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password" 
+                        class="form-control-custom" 
+                        placeholder="••••••••"
+                        required
+                        autocomplete="current-password"
+                    >
+                    <i class="fas fa-eye eye-icon" id="togglePassword" style="cursor: pointer;"></i>
+                </div>
+                <div class="error-message" id="password-error"></div>
+            </div>
+
+            <div class="error-message" id="general-error"></div>
+
+            <button type="submit" class="btn-login">
+                <i class="fas fa-sign-in-alt"></i> 
+                Iniciar Sesión
+            </button>
+        </form>
+
+        <div class="login-footer" style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: #6B7280;">
+            <i class="fas fa-lock"></i> Acceso seguro • Huella Urbana
+        </div>
+
+    </div>
+</div>
+
+{# Contenedor oculto para pasar errores de Django al JavaScript #}
+<div id="django-errors" style="display:none;">
+    {% if messages %}
+        {% for message in messages %}
+            <p class="django-message" data-tags="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    
+    {% if form.errors %}
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <p class="django-error" data-field="{{ field }}">{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    
+    {% if username_error %}
+        <p id="username-context-error">{{ username_error }}</p>
+    {% endif %}
+    
+    {% if password_error %}
+        <p id="password-context-error">{{ password_error }}</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // ===========================================
+    // LOGIN - JAVASCRIPT SIMPLIFICADO
+    // ===========================================
+    
+    (function() {
+        'use strict';
+        
+        // ==================== MOSTRAR/OCULTAR CONTRASEÑA ====================
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+        
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener("click", function() {
+                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+                this.classList.toggle("fa-eye");
+                this.classList.toggle("fa-eye-slash");
+            });
+        }
+        
+        // ==================== FUNCIÓN PARA MOSTRAR ERRORES ====================
+        function mostrarError(field, errorText) {
+            if (field === "username") {
+                const usernameError = document.getElementById("username-error");
+                const usernameInput = document.getElementById("username");
+                if (usernameError && usernameInput) {
+                    usernameError.textContent = errorText;
+                    usernameError.classList.add("show");
+                    usernameInput.classList.add("error");
+                }
+            } else if (field === "password") {
+                const passwordError = document.getElementById("password-error");
+                const passwordInputField = document.getElementById("password");
+                if (passwordError && passwordInputField) {
+                    passwordError.textContent = errorText;
+                    passwordError.classList.add("show");
+                    passwordInputField.classList.add("error");
+                }
+            } else {
+                const generalError = document.getElementById("general-error");
+                if (generalError) {
+                    generalError.textContent = errorText;
+                    generalError.classList.add("show");
+                }
+            }
+        }
+        
+        // ==================== CARGAR ERRORES DE DJANGO ====================
+        function cargarErroresDjango() {
+            // Errores del formulario
+            const djangoErrors = document.querySelectorAll(".django-error");
+            djangoErrors.forEach(err => {
+                const field = err.getAttribute("data-field");
+                const errorText = err.textContent.trim();
+                if (errorText) mostrarError(field, errorText);
+            });
+            
+            // Errores de contexto (username_error, password_error)
+            const usernameContextError = document.getElementById("username-context-error");
+            if (usernameContextError) {
+                const errorText = usernameContextError.textContent.trim();
+                if (errorText) mostrarError("username", errorText);
+            }
+            
+            const passwordContextError = document.getElementById("password-context-error");
+            if (passwordContextError) {
+                const errorText = passwordContextError.textContent.trim();
+                if (errorText) mostrarError("password", errorText);
+            }
+            
+            // Mensajes de Django (éxito, error, etc.)
+            const djangoMessages = document.querySelectorAll(".django-message");
+            djangoMessages.forEach(msg => {
+                const tags = msg.getAttribute("data-tags") || '';
+                const text = msg.textContent.trim();
+                
+                // Solo mostrar mensajes de error, los de éxito ya los maneja SweetAlert en base.html
+                if (text && (tags.includes('error') || tags.includes('warning'))) {
+                    if (tags.includes('username')) {
+                        mostrarError("username", text);
+                    } else if (tags.includes('password')) {
+                        mostrarError("password", text);
+                    } else {
+                        mostrarError("general", text);
+                    }
+                }
+            });
+        }
+        
+        // ==================== LIMPIAR ERRORES AL ESCRIBIR ====================
+        const inputs = document.querySelectorAll(".form-control-custom");
+        inputs.forEach(input => {
+            input.addEventListener("input", function() {
+                this.classList.remove("error");
+                const errorDiv = this.closest(".form-group")?.querySelector(".error-message");
+                if (errorDiv) errorDiv.classList.remove("show");
+                
+                const generalError = document.getElementById("general-error");
+                if (generalError) generalError.classList.remove("show");
+            });
+        });
+        
+        // ==================== VALIDACIÓN BÁSICA ====================
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) {
+            loginForm.addEventListener("submit", function(e) {
+                let isValid = true;
+                const usernameInput = document.getElementById("username");
+                const passwordInputField = document.getElementById("password");
+                
+                // Limpiar errores previos
+                document.querySelectorAll(".error-message").forEach(el => el.classList.remove("show"));
+                document.querySelectorAll(".form-control-custom").forEach(el => el.classList.remove("error"));
+                
+                // Validar username
+                if (!usernameInput.value.trim()) {
+                    mostrarError("username", "Ingresa tu usuario o correo electrónico");
+                    isValid = false;
+                }
+                
+                // Validar password
+                if (!passwordInputField.value.trim()) {
+                    mostrarError("password", "Ingresa tu contraseña");
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                }
+            });
+        }
+        
+        // ==================== INICIALIZAR ====================
+        cargarErroresDjango();
+        
+    })();
+</script>
+{% endblock %}

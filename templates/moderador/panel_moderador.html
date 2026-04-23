@@ -1,0 +1,606 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}🛠️ Panel de Moderación{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="{% static 'css/panel_de_moderador.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="moderation-layout">
+    
+    <aside class="filters-sidebar">
+        <div class="sidebar-card">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">
+                    <i class="fas fa-sliders-h"></i>
+                    Filtros
+                </h2>
+            </div>
+
+            <div class="sidebar-body">
+                
+                <div class="filter-group">
+                    <div class="filter-title">
+                        <i class="fas fa-tasks"></i>
+                        Estado del Reporte
+                    </div>
+                    <div class="filter-dropdown" id="statusFilter">
+                        <button class="filter-btn active" data-filter-type="status" data-filter-value="pendiente">
+                            <span class="filter-btn-content">
+                                <i class="fas fa-clock"></i>
+                                Pendientes
+                            </span>
+                            <i class="fas fa-chevron-down filter-chevron"></i>
+                        </button>
+                        <div class="filter-options">
+                            <div class="filter-option selected" data-status="pendiente" data-label="Pendientes" data-icon="fa-clock">
+                                <i class="fas fa-clock"></i> Pendientes
+                            </div>
+                            <div class="filter-option" data-status="aprobado" data-label="Aprobados" data-icon="fa-check-circle">
+                                <i class="fas fa-check-circle"></i> Aprobados
+                            </div>
+                            <div class="filter-option" data-status="rechazado" data-label="Rechazados" data-icon="fa-times-circle">
+                                <i class="fas fa-times-circle"></i> Rechazados
+                            </div>
+                            <div class="filter-option" data-status="all" data-label="Todos los estados" data-icon="fa-list">
+                                <i class="fas fa-list"></i> Todos los estados
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Gravedad del Ataque
+                    </div>
+                    <div class="filter-dropdown" id="severityFilter">
+                        <button class="filter-btn" data-filter-type="severity" data-filter-value="all">
+                            <span class="filter-btn-content">
+                                <i class="fas fa-list"></i>
+                                Todas las gravedades
+                            </span>
+                            <i class="fas fa-chevron-down filter-chevron"></i>
+                        </button>
+                        <div class="filter-options">
+                            <div class="filter-option selected" data-severity="all" data-label="Todas las gravedades" data-icon="fa-list">
+                                <i class="fas fa-list"></i> Todas las gravedades
+                            </div>
+                            <div class="filter-option" data-severity="grave" data-label="Graves" data-icon="fa-exclamation-triangle">
+                                <i class="fas fa-exclamation-triangle"></i> Graves
+                            </div>
+                            <div class="filter-option" data-severity="moderado" data-label="Moderados" data-icon="fa-exclamation-circle">
+                                <i class="fas fa-exclamation-circle"></i> Moderados
+                            </div>
+                            <div class="filter-option" data-severity="leve" data-label="Leves" data-icon="fa-info-circle">
+                                <i class="fas fa-info-circle"></i> Leves
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">
+                        <i class="fas fa-paw"></i>
+                        Tipo de Animal Víctima
+                    </div>
+                    <div class="filter-dropdown" id="animalFilter">
+                        <button class="filter-btn" data-filter-type="animal" data-filter-value="all">
+                            <span class="filter-btn-content">
+                                <i class="fas fa-list"></i>
+                                Todos los animales
+                            </span>
+                            <i class="fas fa-chevron-down filter-chevron"></i>
+                        </button>
+                        <div class="filter-options">
+                            <div class="filter-option selected" data-animal="all" data-label="Todos los animales" data-icon="fa-list">
+                                <i class="fas fa-list"></i> Todos los animales
+                            </div>
+                            <div class="filter-option" data-animal="perro" data-label="Perros" data-icon="fa-dog">
+                                <i class="fas fa-dog"></i> Perros
+                            </div>
+                            <div class="filter-option" data-animal="gato" data-label="Gatos" data-icon="fa-cat">
+                                <i class="fas fa-cat"></i> Gatos
+                            </div>
+                            <div class="filter-option" data-animal="otro" data-label="Otros" data-icon="fa-paw">
+                                <i class="fas fa-paw"></i> Otros
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">
+                        <i class="fas fa-user-secret"></i>
+                        Reporte Anónimo
+                    </div>
+                    <div class="filter-dropdown" id="anonymousFilter">
+                        <button class="filter-btn" data-filter-type="anonymous" data-filter-value="all">
+                            <span class="filter-btn-content">
+                                <i class="fas fa-list"></i>
+                                Todos
+                            </span>
+                            <i class="fas fa-chevron-down filter-chevron"></i>
+                        </button>
+                        <div class="filter-options">
+                            <div class="filter-option selected" data-anonymous="all" data-label="Todos" data-icon="fa-list">
+                                <i class="fas fa-list"></i> Todos
+                            </div>
+                            <div class="filter-option" data-anonymous="true" data-label="Sí (Anónimo)" data-icon="fa-user-secret">
+                                <i class="fas fa-user-secret"></i> Sí (Anónimo)
+                            </div>
+                            <div class="filter-option" data-anonymous="false" data-label="No (Con datos)" data-icon="fa-user">
+                                <i class="fas fa-user"></i> No (Con datos)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="export-section">
+                    <a href="{% url 'exportar_csv' %}" class="export-btn">
+                        <i class="fas fa-download"></i>
+                        Exportar a CSV
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="content-area">
+        
+        <div class="stats-container">
+            <div class="stat-card pending">
+                <div class="stat-number" id="pendingCount">{{ pendientes }}</div>
+                <div class="stat-label">Pendientes</div>
+            </div>
+            <div class="stat-card approved">
+                <div class="stat-number">{{ aprobados }}</div>
+                <div class="stat-label">Aprobados</div>
+            </div>
+            <div class="stat-card rejected">
+                <div class="stat-number">{{ rechazados }}</div>
+                <div class="stat-label">Rechazados</div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-number">{{ todos }}</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+
+        {% if reportes %}
+        <div class="alert-info" id="alertContador">
+            <div class="alert-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="alert-content">
+                <h5>Reportes Filtrados</h5>
+                <p>
+                    Mostrando <span class="counter-highlight">{{ reportes.start_index }}</span>-<span class="counter-highlight">{{ reportes.end_index }}</span> 
+                    de <span class="counter-highlight" id="contadorReportes">{{ total_filtrados }}</span> reportes
+                </p>
+            </div>
+        </div>
+
+        <div class="reports-list">
+            {% for reporte in reportes %}
+            <article class="report-card"
+                data-id="{{ reporte.id }}"
+                data-titulo="{{ reporte.titulo|escapejs }}"
+                data-status="{{ reporte.estado }}"
+                data-severity="{{ reporte.gravedad }}"
+                data-animal="{{ reporte.tipo_animal }}"
+                data-anonymous="{% if reporte.anonimo %}true{% else %}false{% endif %}">
+
+                <header class="report-top">
+                    <div class="report-top-left">
+                        <div class="report-id-badge">
+                            <i class="fas fa-hashtag"></i>
+                            REP-{{ reporte.id }}
+                        </div>
+                        <div class="severity-tag severity-{{ reporte.gravedad }}">
+                            {{ reporte.get_gravedad_display }}
+                        </div>
+                    </div>
+                    <div class="status-badge status-{{ reporte.estado }}">
+                        {% if reporte.estado == 'pendiente' %}
+                            <i class="fas fa-clock"></i> Pendiente
+                        {% elif reporte.estado == 'aprobado' %}
+                            <i class="fas fa-check-circle"></i> Aprobado
+                        {% else %}
+                            <i class="fas fa-times-circle"></i> Rechazado
+                        {% endif %}
+                    </div>
+                </header>
+
+                <div class="report-content">
+                    
+                    <div class="report-title-section">
+                        <h3 class="report-main-title">{{ reporte.titulo }}</h3>
+                        <p class="report-subtitle">Reportado el {{ reporte.fecha|date:"d/m/Y" }} {% if reporte.hora %}a las {{ reporte.hora|time:"H:i" }} hrs{% endif %}</p>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-icon-box">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                            <div class="info-text">
+                                <div class="info-label">Animal Víctima</div>
+                                <div class="info-value">{{ reporte.get_tipo_animal_display|default:"No indicado" }}</div>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-icon-box">
+                                <i class="fas fa-dog"></i>
+                            </div>
+                            <div class="info-text">
+                                <div class="info-label">Perros Agresores</div>
+                                <div class="info-value">{{ reporte.cantidad_perros|default_if_none:"Sin dato" }}</div>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-icon-box">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <div class="info-text">
+                                <div class="info-label">Tipo de Reporte</div>
+                                <div class="info-value">
+                                    {% if reporte.anonimo %}
+                                        <span class="badge bg-secondary">Anónimo</span>
+                                    {% else %}
+                                        <span class="badge bg-success">Identificado</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-icon-box">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="info-text">
+                                <div class="info-label">Ubicación</div>
+                                <div class="info-value">{{ reporte.direccion|default:"No indicada" }}</div>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-icon-box">
+                                <i class="fas fa-city"></i>
+                            </div>
+                            <div class="info-text">
+                                <div class="info-label">Ciudad</div>
+                                <div class="info-value">{{ reporte.ciudad|default:"No especificada" }}</div>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <div class="info-icon-box">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="info-text">
+                                <div class="info-label">Fecha del Incidente</div>
+                                <div class="info-value">{{ reporte.fecha|date:"d/m/Y" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if reporte.fotos.all.count %}
+                    <div class="photos-wrapper">
+                        <div class="photos-title">
+                            <i class="fas fa-camera"></i>
+                            Evidencia Fotográfica
+                            <span class="photos-count">{{ reporte.fotos.all.count }}</span>
+                        </div>
+                        
+                        <div class="bulk-moderation-controls">
+                            <div class="bulk-info">
+                                <i class="fas fa-images"></i>
+                                <span>{{ reporte.fotos.all.count }} foto(s) en este reporte</span>
+                            </div>
+                            <div class="bulk-actions">
+                                <button class="bulk-btn censurar-todas" data-action="censurar-todas" data-reporte-id="{{ reporte.id }}">
+                                    <i class="fas fa-eye-slash"></i>
+                                    Censurar TODAS
+                                </button>
+                                <button class="bulk-btn aprobar-todas" data-action="aprobar-todas" data-reporte-id="{{ reporte.id }}">
+                                    <i class="fas fa-eye"></i>
+                                    Aprobar TODAS
+                                </button>
+                                <button class="bulk-btn ocultar-todas" data-action="ocultar-todas" data-reporte-id="{{ reporte.id }}">
+                                    <i class="fas fa-ban"></i>
+                                    Ocultar TODAS
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="photos-scroll">
+                            {% for foto in reporte.fotos.all %}
+                            <div class="photo-card-wrapper">
+                                <div class="photo-card" data-foto-url="{{ foto.archivo.url }}" data-foto-censurada="{{ foto.es_censurada|yesno:'true,false' }}" data-foto-visibilidad="{{ foto.visibilidad }}">
+                                    {% if foto.es_censurada or foto.visibilidad == 'censurada' or foto.visibilidad == 'oculta' %}
+                                    <div class="sensitive-overlay {{ foto.visibilidad }}">
+                                        <i class="fas fa-eye-slash"></i>
+                                        <span>CENSURADO</span>
+                                    </div>
+                                    {% else %}
+                                    <img src="{{ foto.archivo.url }}" alt="Evidencia {{ forloop.counter }}" loading="lazy">
+                                    <div class="photo-overlay">
+                                        <i class="fas fa-search-plus"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="photo-status-indicator {{ foto.visibilidad }}">
+                                    {% if foto.visibilidad == 'visible' %}
+                                    <i class="fas fa-globe"></i> Visible
+                                    {% elif foto.visibilidad == 'censurada' %}
+                                    <i class="fas fa-mask"></i> Censurada
+                                    {% elif foto.visibilidad == 'oculta' %}
+                                    <i class="fas fa-hidden"></i> Oculta
+                                    {% else %}
+                                    <i class="fas fa-clock"></i> Pendiente
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="no-photos">No hay fotos disponibles</p>
+                    {% endif %}
+
+                    <div class="report-actions">
+                        {% if reporte.estado == 'pendiente' %}
+                        <button class="action-btn btn-approve" data-action="aprobar" data-reporte-id="{{ reporte.id }}">
+                            <i class="fas fa-check"></i>
+                            Aprobar
+                        </button>
+                        <button class="action-btn btn-reject" data-action="rechazar" data-reporte-id="{{ reporte.id }}">
+                            <i class="fas fa-times"></i>
+                            Rechazar
+                        </button>
+                        {% endif %}
+                        <button class="action-btn btn-view" data-action="ver-detalles" data-reporte-id="{{ reporte.id }}">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                        <button class="action-btn btn-delete" data-action="eliminar" data-reporte-id="{{ reporte.id }}" data-reporte-titulo="{{ reporte.titulo|escapejs }}">
+                            <i class="fas fa-trash-alt"></i>
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        {% if reportes.has_other_pages %}
+        <div class="pagination-container">
+            <nav aria-label="Paginación de reportes">
+                <ul class="pagination-list">
+                    
+                    {% if reportes.has_previous %}
+                    <li class="pagination-item">
+                        <a href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                           class="pagination-link" 
+                           title="Primera página">
+                            <i class="fas fa-angle-double-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% if reportes.has_previous %}
+                    <li class="pagination-item">
+                        <a href="?page={{ reportes.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                           class="pagination-link" 
+                           title="Página anterior">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="pagination-item disabled">
+                        <span class="pagination-link">
+                            <i class="fas fa-angle-left"></i>
+                        </span>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in reportes.paginator.page_range %}
+                        {% if reportes.number == num %}
+                        <li class="pagination-item active">
+                            <span class="pagination-link">{{ num }}</span>
+                        </li>
+                        {% elif num > reportes.number|add:'-3' and num < reportes.number|add:'3' %}
+                        <li class="pagination-item">
+                            <a href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                               class="pagination-link">
+                                {{ num }}
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if reportes.has_next %}
+                    <li class="pagination-item">
+                        <a href="?page={{ reportes.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                           class="pagination-link" 
+                           title="Página siguiente">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="pagination-item disabled">
+                        <span class="pagination-link">
+                            <i class="fas fa-angle-right"></i>
+                        </span>
+                    </li>
+                    {% endif %}
+                    
+                    {% if reportes.has_next %}
+                    <li class="pagination-item">
+                        <a href="?page={{ reportes.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
+                           class="pagination-link" 
+                           title="Última página">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                </ul>
+            </nav>
+            
+            <div class="pagination-info">
+                Página {{ reportes.number }} de {{ reportes.paginator.num_pages }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-inbox"></i>
+            </div>
+            <p class="empty-text">No hay reportes con el filtro seleccionado</p>
+        </div>
+        {% endif %}
+    </main>
+   
+   <template id="modalDetallesTemplate">
+  <div class="modal-premium">
+
+    <div class="modal-header-custom">
+      <h2 class="modal-title-custom">
+        <i class="fas fa-file-alt"></i>
+        <span id="modal-titulo"></span>
+      </h2>
+      <p class="modal-subtitle-custom">
+        <i class="fas fa-calendar-alt"></i>
+        <span id="modal-fecha"></span>
+      </p>
+    </div>
+
+    <div class="tabs-container">
+      <button class="tab-button active" data-tab="tab-incidente">
+        <i class="fas fa-paw"></i><span>Información del Incidente</span>
+      </button>
+      <button class="tab-button" data-tab="tab-reportante">
+        <i class="fas fa-user"></i><span>Datos del Reportante</span>
+      </button>
+      <button class="tab-button" data-tab="tab-ubicacion">
+        <i class="fas fa-map-marker-alt"></i><span>Ubicación</span>
+      </button>
+      <button class="tab-button" data-tab="tab-descripcion">
+        <i class="fas fa-align-left"></i><span>Descripción</span>
+      </button>
+    </div>
+
+    <div id="tab-incidente" class="tab-content active">
+      <div class="detail-grid">
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-paw"></i> Tipo de Animal</div>
+          <div class="detail-value" id="modal-tipo-animal"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-dog"></i> Cantidad de Perros Agresores</div>
+          <div class="detail-value" id="modal-cantidad-perros"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-exclamation-triangle"></i> Gravedad</div>
+          <div class="detail-value" id="modal-gravedad"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-map"></i> Dirección Exacta</div>
+          <div class="detail-value" id="modal-direccion"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="tab-reportante" class="tab-content">
+      <div class="detail-grid">
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-user"></i> Nombre</div>
+          <div class="detail-value" id="modal-nombre"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-envelope"></i> Email</div>
+          <div class="detail-value" id="modal-email"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-phone"></i> Teléfono</div>
+          <div class="detail-value" id="modal-telefono"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-mask"></i> Reporte Anónimo</div>
+          <div class="detail-value" id="modal-anonimo"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-user-shield"></i> Usuario Registrado</div>
+          <div class="detail-value" id="modal-usuario"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="tab-ubicacion" class="tab-content">
+      <div class="detail-grid">
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-city"></i> Ciudad</div>
+          <div class="detail-value" id="modal-ciudad"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-map"></i> Dirección</div>
+          <div class="detail-value" id="modal-direccion-ubicacion"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-flag"></i> País</div>
+          <div class="detail-value" id="modal-pais"></div>
+        </div>
+
+        <div class="detail-item">
+          <div class="detail-label"><i class="fas fa-map-pin"></i> Coordenadas</div>
+          <div class="detail-value" id="modal-coordenadas"></div>
+        </div>
+
+      </div>
+
+      <a href="#" id="modal-map-link" target="_blank" class="map-link">
+        <i class="fas fa-map-marked-alt"></i>
+        Ver en Google Maps
+      </a>
+    </div>
+
+    <div id="tab-descripcion" class="tab-content">
+      <div class="description-box">
+        <p id="modal-descripcion"></p>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+</div>
+
+<script src="{% static 'js/panel_moderador.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: huella-urbana
+    runtime: python
+    region: oregon
+    buildCommand: ./build.sh
+    startCommand: gunicorn huella_hurbana.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: RENDER
+        value: true
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false

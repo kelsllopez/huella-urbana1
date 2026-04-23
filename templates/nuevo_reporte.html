@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}🐾 Nuevo Reporte | Huella Urbana{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/nuevo_reporte.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+    
+    <style>
+        .custom-div-icon, .leaflet-div-icon { 
+            background: transparent !important; 
+            border: none !important; 
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="form-container">
+  <div class="form-header">
+    <h1><i class="fas fa-paw"></i> Nuevo Reporte</h1>
+    <p>Ayúdanos a documentar incidentes de perros callejeros en todo Chile</p>
+  </div>
+
+  <div class="steps-indicator">
+    <div class="step active" data-step="1">
+      <div class="step-circle">1</div>
+      <div class="step-label">Información</div>
+    </div>
+    <div class="step" data-step="2">
+      <div class="step-circle">2</div>
+      <div class="step-label">Ubicación</div>
+    </div>
+    <div class="step" data-step="3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Evidencia</div>
+    </div>
+  </div>
+
+  <form method="POST" enctype="multipart/form-data" id="reportForm" action="{% url 'nuevo_reporte' %}">
+    {% csrf_token %}
+
+    <!-- PASO 1: INFORMACIÓN BÁSICA -->
+    <div class="step-content active" data-step="1">
+      <div class="info-box">
+        <h5><i class="fas fa-info-circle"></i> Paso 1: Información Básica</h5>
+        <p class="mb-0">Completa los datos del incidente. Los campos con <span class="required">*</span> son obligatorios.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-heading"></i> Título del Incidente <span class="required">*</span></label>
+        {{ form.titulo }}
+        <div class="form-error" id="error-titulo"></div>
+        {% if form.titulo.errors %}<div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ form.titulo.errors.0 }}</div>{% endif %}
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-calendar"></i> Fecha del Incidente <span class="required">*</span></label>
+          {{ form.fecha }}
+          <div class="date-warning" id="dateWarning">
+            <i class="fas fa-exclamation-triangle"></i> No puedes seleccionar una fecha futura
+          </div>
+          <div class="form-error" id="error-fecha"></div>
+          {% if form.fecha.errors %}<div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ form.fecha.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-clock"></i> Hora Aproximada</label>
+          {{ form.hora }}
+          <div class="form-error" id="error-hora"></div>
+          {% if form.hora.errors %}<div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ form.hora.errors.0 }}</div>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-paw"></i> Tipo de Animal Víctima <span class="required">*</span></label>
+          {{ form.tipo_animal }}
+          <div class="form-error" id="error-tipo_animal"></div>
+          {% if form.tipo_animal.errors %}<div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ form.tipo_animal.errors.0 }}</div>{% endif %}
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-dog"></i> Cantidad de Perros Agresores</label>
+          {{ form.cantidad_perros }}
+          <div class="form-error" id="error-cantidad_perros"></div>
+          {% if form.cantidad_perros.errors %}<div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ form.cantidad_perros.errors.0 }}</div>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-exclamation-triangle"></i> Gravedad del Ataque <span class="required">*</span></label>
+        {{ form.gravedad }}
+        <div class="severity-options">
+          <div class="severity-option severity-leve" data-value="leve">
+            <div class="severity-content">
+              <div class="severity-icon" style="color: #3B82F6;"><i class="fas fa-info-circle"></i></div>
+              <h5>Leve</h5>
+              <p class="text-muted">Sin heridas graves</p>
+            </div>
+          </div>
+          <div class="severity-option severity-moderado" data-value="moderado">
+            <div class="severity-content">
+              <div class="severity-icon" style="color: #F59E0B;"><i class="fas fa-exclamation-circle"></i></div>
+              <h5>Moderado</h5>
+              <p class="text-muted">Heridas menores</p>
+            </div>
+          </div>
+          <div class="severity-option severity-grave" data-value="grave">
+            <div class="severity-content">
+              <div class="severity-icon" style="color: #EF4444;"><i class="fas fa-skull-crossbones"></i></div>
+              <h5>Grave</h5>
+              <p class="text-muted">Heridas serias o fatales</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-error" id="error-gravedad"></div>
+        {% if form.gravedad.errors %}<div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ form.gravedad.errors.0 }}</div>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-align-left"></i> Descripción Detallada del Incidente <span class="required">*</span></label>
+        {{ form.descripcion }}
+        <div class="progress-bar">
+          <div class="progress-fill" id="descProgress" style="width: 0%"></div>
+        </div>
+        <span class="char-counter invalid" id="charCount">Mínimo 50 caracteres (0/50)</span>
+        <div class="form-error" id="error-descripcion"></div>
+        {% if form.descripcion.errors %}<div class="form-error"><i class="fas fa-exclamation-circle"></i> {{ form.descripcion.errors.0 }}</div>{% endif %}
+      </div>
+    </div>
+
+    <!-- PASO 2: UBICACIÓN -->
+    <div class="step-content" data-step="2">
+      <div class="info-box">
+        <h5><i class="fas fa-map-marker-alt"></i> Paso 2: Ubicación del Incidente</h5>
+        <p class="mb-0">Usa el botón GPS para marcar tu ubicación actual o haz clic directamente en el mapa.</p>
+      </div>
+
+      <div class="form-group">
+        <button type="button" class="btn btn-gps" id="btnObtenerUbicacion">
+          <i class="fas fa-location-arrow"></i> Usar mi ubicación actual
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-map"></i> Haz clic en el mapa para ajustar la ubicación</label>
+        <div id="map"></div>
+        {{ form.latitud }}
+        {{ form.longitud }}
+        <div class="form-error" id="error-ubicacion"></div>
+      </div>
+
+      <input type="hidden" name="direccion" id="id_direccion">
+      <input type="hidden" name="ciudad" id="id_ciudad">
+      <input type="hidden" name="region" id="id_region">
+      <input type="hidden" name="pais" id="id_pais" value="Chile">
+    </div>
+
+    <!-- PASO 3: EVIDENCIA -->
+    <div class="step-content" data-step="3">
+      <div class="info-box">
+        <h5><i class="fas fa-camera"></i> Paso 3: Evidencia Fotográfica</h5>
+        <p class="mb-0">Sube fotografías del incidente. Las imágenes ayudan a validar tu reporte más rápido.</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-camera"></i> Fotografías del Incidente</label>
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <div class="upload-text">Arrastra imágenes aquí o haz clic para seleccionar</div>
+          <div class="upload-hint">Formatos: JPG, PNG (máx. 5MB por imagen - máximo 5 fotos)</div>
+          <input type="file" name="fotografias" id="fileInput" multiple accept="image/*" style="display:none;">
+        </div>
+        <div class="image-preview-container" id="imagePreview"></div>
+        <div id="fileCountIndicator" style="margin-top:10px; color:#6B7280; font-size:0.9rem;">
+          <i class="fas fa-images"></i> Archivos seleccionados: <strong id="fileCount">0</strong>/5
+        </div>
+      </div>
+
+      <div class="info-box" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); color:white; border:none;">
+        <h5 style="color:white;"><i class="fas fa-user-secret"></i> Privacidad del Reporte</h5>
+        <div class="form-check" style="margin:15px 0;">
+          {{ form.anonimo }}
+          <label class="form-check-label" for="id_anonimo" style="color:white;">
+            <i class="fas fa-shield-alt"></i> Enviar este reporte de forma anónima
+          </label>
+        </div>
+        <p class="mb-0" style="font-size:0.9rem; opacity:0.95;">
+          Si marcas esta opción, tu nombre, email y teléfono NO serán almacenados ni mostrados públicamente.
+        </p>
+      </div>
+
+      <div id="contactFields">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-user"></i> Tu Nombre <span class="required" id="nombreRequired">*</span></label>
+            {{ form.nombre_reportante }}
+            <div class="form-error" id="error-nombre_reportante"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-envelope"></i> Email de Contacto <span class="required" id="emailRequired">*</span></label>
+            {{ form.email_reportante }}
+            <div class="form-error" id="error-email_reportante"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-phone"></i> Teléfono (Opcional)</label>
+          {{ form.telefono_reportante }}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="{% url 'index' %}" class="btn btn-cancel">
+        <i class="fas fa-times"></i> Cancelar
+      </a>
+      <button type="button" class="btn btn-prev" id="btnPrev" style="display:none;">
+        <i class="fas fa-arrow-left"></i> Anterior
+      </button>
+      <button type="button" class="btn btn-next" id="btnNext">
+        Continuar <i class="fas fa-arrow-right"></i>
+      </button>
+      <button type="submit" class="btn btn-submit" id="btnSubmit" style="display:none;">
+        <i class="fas fa-paper-plane"></i> Enviar Reporte
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{% static 'js/nuevo_reporte.js' %}"></script>
+{% endblock %}

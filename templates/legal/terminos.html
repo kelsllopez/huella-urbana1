@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}📜 Términos y Condiciones | Huella Urbana{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/legal.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="legal-container">
+    
+    <!-- HEADER -->
+    <div class="legal-header">
+        <div class="legal-header-content">
+            <h1>
+                <i class="fas fa-gavel"></i>
+                Términos y Condiciones
+            </h1>
+            <p class="legal-date">
+                <i class="far fa-calendar-alt"></i> 
+                Vigentes desde: {% now "d \d\e F \d\e Y" %}
+            </p>
+        </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="legal-content">
+        
+        <div class="legal-section">
+            <h2><i class="fas fa-handshake"></i> 1. Aceptación de los Términos</h2>
+            <p>
+                Al acceder o utilizar la plataforma <strong>Huella Urbana</strong> (sitio web y aplicación móvil), 
+                aceptas estar legalmente vinculado por estos Términos y Condiciones. Si no estás de acuerdo con 
+                alguno de estos términos, no debes utilizar nuestros servicios.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-info-circle"></i> 2. Descripción del Servicio</h2>
+            <p>
+                Huella Urbana es una plataforma ciudadana sin fines de lucro que permite:
+            </p>
+            <ul>
+                <li>Reportar incidentes de ataques de perros callejeros en Chile.</li>
+                <li>Visualizar en un mapa interactivo los reportes verificados por moderadores.</li>
+                <li>Acceder a estadísticas públicas sobre la incidencia de estos eventos.</li>
+            </ul>
+            <p>
+                <strong>Importante:</strong> Huella Urbana es una herramienta de concientización y recolección de datos. 
+                <strong>NO es un servicio de emergencia.</strong> Si estás en peligro inminente, contacta a las autoridades 
+                locales (Carabineros: 133, Ambulancia: 131).
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-user-check"></i> 3. Responsabilidad del Usuario</h2>
+            <p>Al utilizar nuestra plataforma, te comprometes a:</p>
+            <ul>
+                <li>Proporcionar información veraz y precisa en tus reportes.</li>
+                <li>No subir contenido falso, engañoso, difamatorio, obsceno o que incite al odio.</li>
+                <li>No subir fotografías que violen la privacidad de terceros sin su consentimiento.</li>
+                <li>No utilizar la plataforma para acosar, amenazar o perjudicar a otros usuarios.</li>
+                <li>No intentar manipular, hackear o dañar el funcionamiento de la plataforma.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-camera"></i> 4. Contenido Generado por el Usuario</h2>
+            <p>
+                Al subir fotografías, descripciones o cualquier otro contenido a Huella Urbana, nos otorgas una 
+                licencia mundial, no exclusiva, gratuita y transferible para:
+            </p>
+            <ul>
+                <li>Mostrar dicho contenido en el mapa público y en las estadísticas de la plataforma.</li>
+                <li>Moderar, censurar u ocultar el contenido si viola nuestras políticas.</li>
+                <li>Utilizar el contenido de forma anonimizada para fines de investigación y concientización.</li>
+            </ul>
+            <p>
+                Eres el único responsable del contenido que publicas. Huella Urbana se reserva el derecho de 
+                eliminar cualquier contenido que considere inapropiado, sin previo aviso.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-shield-virus"></i> 5. Moderación de Contenido</h2>
+            <p>
+                Todos los reportes pasan por un proceso de moderación antes de ser publicados en el mapa público. 
+                Nuestro equipo de moderadores verifica:
+            </p>
+            <ul>
+                <li>Que el reporte esté relacionado con ataques de perros callejeros.</li>
+                <li>Que las fotografías no contengan contenido ilegal o extremadamente gráfico.</li>
+                <li>Que la ubicación sea válida y esté dentro del territorio chileno.</li>
+            </ul>
+            <p>
+                Podemos rechazar, censurar (pixelar) u ocultar cualquier reporte o imagen que no cumpla con 
+                nuestros estándares. Las decisiones de moderación son finales.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-copyright"></i> 6. Propiedad Intelectual</h2>
+            <p>
+                Todo el contenido original de Huella Urbana (logo, diseño, código fuente, textos institucionales) 
+                está protegido por derechos de autor. No puedes copiar, modificar, distribuir o reproducir 
+                nuestro contenido sin autorización previa por escrito.
+            </p>
+            <p>
+                Las marcas, logos y nombres de terceros mencionados en la plataforma pertenecen a sus respectivos dueños.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-ban"></i> 7. Actividades Prohibidas</h2>
+            <p>Queda estrictamente prohibido:</p>
+            <ul>
+                <li>Crear reportes falsos o duplicados.</li>
+                <li>Suplantar la identidad de otra persona o entidad.</li>
+                <li>Utilizar bots, scripts o métodos automatizados para interactuar con la plataforma.</li>
+                <li>Extraer datos de la plataforma mediante scraping sin autorización.</li>
+                <li>Utilizar la plataforma para fines comerciales no autorizados.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-exclamation-triangle"></i> 8. Limitación de Responsabilidad</h2>
+            <p>
+                <strong>Huella Urbana se proporciona "tal cual" y "según disponibilidad".</strong> 
+                No garantizamos que el servicio sea ininterrumpido, seguro o libre de errores.
+            </p>
+            <p>
+                En ningún caso seremos responsables por:
+            </p>
+            <ul>
+                <li>Daños directos, indirectos, incidentales o consecuentes derivados del uso de la plataforma.</li>
+                <li>La exactitud, integridad o actualidad de los reportes publicados por usuarios.</li>
+                <li>Las acciones u omisiones de terceros (incluyendo otros usuarios).</li>
+                <li>Cualquier incidente o daño sufrido como consecuencia de la información mostrada en el mapa.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-link"></i> 9. Enlaces a Terceros</h2>
+            <p>
+                Nuestra plataforma puede contener enlaces a sitios web de terceros (ej. Google Maps). 
+                No tenemos control sobre el contenido o las prácticas de privacidad de dichos sitios y no asumimos 
+                responsabilidad por ellos.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-gavel"></i> 10. Ley Aplicable y Jurisdicción</h2>
+            <p>
+                Estos Términos y Condiciones se rigen por las leyes de la República de Chile. Cualquier disputa 
+                relacionada con estos términos será sometida a la jurisdicción de los tribunales ordinarios de 
+                justicia de la ciudad de Santiago, Chile.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-sync-alt"></i> 11. Modificaciones a los Términos</h2>
+            <p>
+                Podemos modificar estos Términos y Condiciones en cualquier momento. La versión actualizada estará 
+                disponible en esta página con la fecha de vigencia. El uso continuado de la plataforma después de 
+                cualquier cambio constituye tu aceptación de los nuevos términos.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-door-open"></i> 12. Terminación</h2>
+            <p>
+                Podemos suspender o cancelar tu acceso a la plataforma en cualquier momento, sin previo aviso, 
+                si violas estos Términos y Condiciones o si realizas actividades que consideremos perjudiciales 
+                para la comunidad.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h2><i class="fas fa-envelope"></i> 13. Contacto</h2>
+            <p>Para cualquier consulta legal o relacionada con estos términos:</p>
+            <div class="contact-box">
+                <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:legal@huellaurbana.cl">legal@huellaurbana.cl</a></p>
+                <p><i class="fas fa-globe"></i> <strong>Sitio web:</strong> www.huellaurbana.cl</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="legal-footer">
+        <p>
+            <i class="fas fa-paw"></i> 
+            Huella Urbana - Plataforma Ciudadana de Monitoreo de Ataques de Perros Callejeros
+        </p>
+        <p>
+            <a href="{% url 'privacidad' %}">
+                <i class="fas fa-shield-alt"></i> Política de Privacidad
+            </a>
+            <span class="separator">|</span>
+            <a href="{% url 'index' %}">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

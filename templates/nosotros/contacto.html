@@ -1,0 +1,130 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}📬 Contáctanos | Huella Urbana{% endblock %}
+
+{% block extra_head %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/contacto.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="contact-header">
+    <h1><i class="fas fa-envelope"></i> Contáctanos</h1>
+    <p style="font-size: 1.2rem; color: #6B7280;">Estamos aquí para ayudarte. Escríbenos y te responderemos pronto.</p>
+</div>
+
+<div class="container">
+    <div class="contact-container">
+        
+        <div class="contact-card">
+            <div class="card-title">
+                <i class="fas fa-paper-plane"></i>
+                Envíanos un Mensaje
+            </div>
+
+            <form id="contactForm">
+                <div class="form-group">
+                    <label class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" placeholder="Juan Pérez" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Asunto</label>
+                    <select class="form-select" required>
+                        <option selected>Selecciona un asunto...</option>
+                        <option>Consulta general</option>
+                        <option>Problema técnico</option>
+                        <option>Sugerencia</option>
+                        <option>Colaboración</option>
+                        <option>Reporte de error</option>
+                        <option>Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mensaje</label>
+                    <textarea class="form-control" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                </button>
+            </form>
+
+            <div class="faq-banner">
+                <h5><i class="fas fa-question-circle"></i> ¿Necesitas Ayuda Rápida?</h5>
+                <p>Visita nuestra sección de preguntas frecuentes</p>
+                <button class="btn-faq" onclick="window.location.href='{% url 'ayuda' %}'">
+                    <i class="fas fa-book"></i> Ir a Ayuda
+                </button>
+            </div>
+        </div>
+
+        <div class="contact-card" style="animation-delay: 0.2s;">
+            <div class="card-title">
+                <i class="fas fa-info-circle"></i>
+                Información de Contacto
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="info-content">
+                    <h5>Ubicación</h5>
+                    <p>Valdivia, Región de Los Ríos<br>Chile 🇨🇱</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon" style="background: linear-gradient(135deg, var(--color-secondary), #3B82F6);">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info-content">
+                    <h5>Email</h5>
+                    <p><strong>contacto@recolector.cl</strong><br>
+                    soporte@recolector.cl</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon" style="background: linear-gradient(135deg, var(--color-success), #059669);">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <div class="info-content">
+                    <h5>Teléfono</h5>
+                    <p>+56 9 1234 5678<br>Lun - Vie: 9:00 - 18:00 hrs</p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-icon" style="background: linear-gradient(135deg, var(--color-warning), #F59E0B);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="info-content">
+                    <h5>Horario de Atención</h5>
+                    <p>Lunes a Viernes: 9:00 - 18:00 hrs<br>
+                    Sábados: 10:00 - 14:00 hrs</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{% static 'js/contacto.js' %}"></script>
+{% endblock %}
