@@ -1,0 +1,1227 @@
+/* ============================================================
+   VARIABLES CSS
+   ============================================================ */
+:root {
+    --color-primary: #8B5CF6;
+    --color-secondary: #60A5FA;
+    --color-success: #10B981;
+    --color-danger: #EF4444;
+    --color-bg: #F9FAFB;
+    --color-text: #1F2937;
+    --color-border: #A78BFA;
+}
+
+/* ============================================================
+   RESET Y BASE
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #F9FAFB 0%, #E5E7EB 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--color-text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar-custom {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #7C3AED 100%);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+    padding: 1rem 0;
+    position: relative;
+    z-index: 1002;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white !important;
+    white-space: nowrap;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin: 0.2rem;
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    background: white;
+    color: var(--color-primary);
+    transform: translateY(-2px);
+}
+
+/* ============================================================
+   MAPA FULL SCREEN
+   ============================================================ */
+.map-wrapper {
+    position: relative;
+    height: calc(100vh - 80px);
+    overflow: hidden;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+/* ============================================================
+   PANEL LATERAL FLOTANTE
+   ============================================================ */
+.sidebar-panel {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 350px;
+    max-height: calc(100vh - 120px);
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.4s ease;
+}
+
+.sidebar-panel.hidden {
+    transform: translateX(-400px);
+}
+
+.sidebar-header {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    padding: 1.5rem;
+    border-radius: 20px 20px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.sidebar-content {
+    padding: 1.5rem;
+}
+
+/* Scrollbar del sidebar */
+.sidebar-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-panel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sidebar-panel::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+}
+
+.sidebar-panel::-webkit-scrollbar-thumb:hover {
+    background: #7C3AED;
+}
+
+/* ============================================================
+   FILTROS
+   ============================================================ */
+.filter-section {
+    margin-bottom: 1.5rem;
+}
+
+.filter-title {
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.filter-title i {
+    font-size: 1.1rem;
+}
+
+.filter-chip {
+    display: inline-block;
+    background: var(--color-bg);
+    border: 2px solid var(--color-border);
+    color: var(--color-text);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    margin: 0.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    user-select: none;
+}
+
+.filter-chip:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+    transform: scale(1.05);
+}
+
+.filter-chip.active {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+.form-select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 2px solid var(--color-border);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* ============================================================
+   ESTADÍSTICAS RÁPIDAS
+   ============================================================ */
+.quick-stat {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    padding: 1rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.quick-stat h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+}
+
+.quick-stat p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ============================================================
+   BOTÓN FLOTANTE (ADD)
+   ============================================================ */
+.floating-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--color-success), #059669);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    animation: pulse 2s infinite;
+    border: none;
+}
+
+.floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.6);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+    }
+    50% {
+        box-shadow: 0 8px 40px rgba(16, 185, 129, 0.7);
+    }
+}
+
+/* ============================================================
+   BOTÓN TOGGLE SIDEBAR
+   ============================================================ */
+.toggle-sidebar {
+    position: absolute;
+    top: 20px;
+    left: 380px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1001;
+    color: var(--color-text);
+}
+
+.toggle-sidebar:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+.toggle-sidebar.hidden {
+    left: 20px;
+}
+
+/* ============================================================
+   POPUP DEL MAPA (LEAFLET)
+   ============================================================ */
+.leaflet-popup-content-wrapper {
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    padding: 0;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    max-width: 280px;
+}
+
+.popup-img {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.popup-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.popup-img:hover img {
+    transform: scale(1.1);
+}
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(139, 92, 246, 0.2);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   MODAL CON TABS
+   ============================================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-container-tabs {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    margin: auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: modalSlideIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Modal Header */
+.modal-header-tabs {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: white;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.modal-title-section {
+    flex: 1;
+    padding-right: 15px;
+}
+
+.modal-title-section h4 {
+    margin: 0 0 6px 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.modal-date {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.modal-close-tabs {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.modal-close-tabs:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Tabs Navigation */
+.tabs-navigation {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+    overflow-x: auto;
+    flex-shrink: 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 150px;
+    padding: 14px 18px;
+    background: transparent;
+    border: none;
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+    position: relative;
+    white-space: nowrap;
+}
+
+.tab-btn i {
+    font-size: 1.1rem;
+}
+
+.tab-btn:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+}
+
+.tab-btn.active {
+    color: #667eea;
+    background: white;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 3px 3px 0 0;
+}
+
+/* Modal Body */
+.modal-body-tabs {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.tab-content-modal {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.tab-content-modal.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Imagen Section */
+.modal-image-section {
+    margin-bottom: 20px;
+}
+
+.modal-image-container {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.modal-image-container:hover {
+    transform: scale(1.02);
+}
+
+.modal-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-no-image {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #adb5bd;
+}
+
+.modal-no-image i {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+.modal-no-image p {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Detail Grid */
+.detail-grid-modal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    width: 100%;
+}
+
+.detail-item-modal {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+    transition: all 0.3s;
+}
+
+.detail-item-modal:hover {
+    background: #e9ecef;
+    transform: translateX(4px);
+}
+
+.detail-item-modal.full-width {
+    grid-column: 1 / -1;
+}
+
+.detail-label-modal {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #667eea;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detail-value-modal {
+    font-size: 1rem;
+    color: #212529;
+    font-weight: 500;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Severity Badge */
+.severity-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.severity-leve {
+    background: #d1f4e0;
+    color: #0d9488;
+}
+
+.severity-moderado {
+    background: #fed7aa;
+    color: #ea580c;
+}
+
+.severity-grave {
+    background: #fecaca;
+    color: #dc2626;
+}
+
+/* Description Box */
+.description-box-modal {
+    background: #f8f9fa;
+    padding: 18px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+    line-height: 1.6;
+}
+
+.description-box-modal p {
+    margin: 0;
+    color: #495057;
+    font-size: 1rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Map Link Button */
+.map-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.map-link-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+/* Modal Footer */
+.modal-footer-tabs {
+    padding: 16px 24px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.btn-close-modal {
+    padding: 10px 24px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-close-modal:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 11000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.lightbox-overlay.active {
+    display: flex;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    background: white;
+    border: none;
+    color: #333;
+    font-size: 32px;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.lightbox-close:hover {
+    background: #e9ecef;
+    transform: rotate(90deg);
+}
+
+/* ============================================================
+   SCROLLBAR PERSONALIZADO
+   ============================================================ */
+.modal-body-tabs::-webkit-scrollbar,
+.tabs-navigation::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.modal-body-tabs::-webkit-scrollbar-track,
+.tabs-navigation::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.modal-body-tabs::-webkit-scrollbar-thumb,
+.tabs-navigation::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 4px;
+}
+
+.modal-body-tabs::-webkit-scrollbar-thumb:hover,
+.tabs-navigation::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}
+
+/* ============================================================
+   RESPONSIVE - TABLETS (992px y menos)
+   ============================================================ */
+@media (max-width: 992px) {
+    .sidebar-panel {
+        width: 320px;
+    }
+
+    .toggle-sidebar {
+        left: 350px;
+    }
+
+    .toggle-sidebar.hidden {
+        left: 20px;
+    }
+
+    .modal-container-tabs {
+        width: 95%;
+        max-width: 95%;
+    }
+
+    .tabs-navigation {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        min-width: 120px;
+        flex-shrink: 0;
+    }
+
+    .detail-grid-modal {
+        grid-template-columns: 1fr;
+    }
+
+    .floating-btn {
+        width: 55px;
+        height: 55px;
+        bottom: 25px;
+        right: 25px;
+        font-size: 1.3rem;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE - MÓVILES (768px y menos)
+   ============================================================ */
+@media (max-width: 768px) {
+    /* Navbar */
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .nav-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        margin: 0.1rem;
+    }
+
+    /* Map Wrapper */
+    .map-wrapper {
+        height: calc(100vh - 70px);
+    }
+
+    /* Sidebar */
+    .sidebar-panel {
+        width: 280px;
+        top: 10px;
+        left: 10px;
+        max-height: calc(100vh - 90px);
+        border-radius: 15px;
+    }
+
+    .sidebar-panel.hidden {
+        transform: translateX(-310px);
+    }
+
+    .sidebar-header {
+        padding: 1.2rem;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .sidebar-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .sidebar-content {
+        padding: 1.2rem;
+    }
+
+    .filter-title {
+        font-size: 0.9rem;
+    }
+
+    .filter-chip {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        margin: 0.2rem;
+    }
+
+    .quick-stat h3 {
+        font-size: 1.7rem;
+    }
+
+    .quick-stat p {
+        font-size: 0.85rem;
+    }
+
+    /* Toggle Button */
+    .toggle-sidebar {
+        width: 45px;
+        height: 45px;
+        top: 10px;
+        left: 300px;
+    }
+
+    .toggle-sidebar.hidden {
+        left: 10px;
+    }
+
+    /* Floating Button */
+    .floating-btn {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 1.2rem;
+    }
+
+    /* Modal */
+    .modal-overlay {
+        padding: 10px;
+    }
+
+    .modal-container-tabs {
+        width: 95%;
+        max-width: 100%;
+        margin: 10px auto;
+        max-height: 95vh;
+    }
+
+    .modal-header-tabs {
+        padding: 16px 20px;
+    }
+
+    .modal-title-section h4 {
+        font-size: 1.2rem;
+    }
+
+    .modal-date {
+        font-size: 0.85rem;
+    }
+
+    .modal-body-tabs {
+        padding: 20px;
+    }
+
+    .tab-btn span {
+        display: none;
+    }
+
+    .tab-btn {
+        min-width: 60px;
+        padding: 12px;
+        justify-content: center;
+    }
+
+    .tab-btn i {
+        margin: 0;
+        font-size: 1.3rem;
+    }
+
+    .detail-grid-modal {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .detail-item-modal {
+        padding: 14px;
+    }
+
+    .modal-image-container {
+        max-height: 250px;
+    }
+
+    .modal-no-image {
+        height: 180px;
+    }
+
+    .modal-no-image i {
+        font-size: 2rem;
+    }
+
+    .lightbox-close {
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 992px) {
+    .modal-container-tabs {
+        width: 95%;
+        max-width: 95%;
+    }
+
+    .tabs-navigation {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        min-width: 120px;
+        flex-shrink: 0;
+    }
+
+    .detail-grid-modal {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-container-tabs {
+        width: 95%;
+        max-width: 100%;
+        margin: 10px auto;
+    }
+
+    .modal-header-tabs {
+        padding: 16px 20px;
+    }
+
+    .modal-title-section h4 {
+        font-size: 1.2rem;
+    }
+
+    .modal-body-tabs {
+        padding: 20px;
+    }
+
+    .tab-btn span {
+        display: none;
+    }
+
+    .tab-btn {
+        min-width: 60px;
+        padding: 12px;
+        justify-content: center;
+    }
+
+    .tab-btn i {
+        margin: 0;
+        font-size: 1.3rem;
+    }
+
+    .detail-grid-modal {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .detail-item-modal {
+        padding: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-container-tabs {
+        width: 100%;
+        margin: 5px auto;
+        border-radius: 12px;
+    }
+
+    .modal-header-tabs {
+        padding: 14px 16px;
+        flex-wrap: wrap;
+    }
+
+    .modal-title-section h4 {
+        font-size: 1.1rem;
+        padding-right: 45px;
+    }
+
+    .modal-close-tabs {
+        width: 36px;
+        height: 36px;
+        font-size: 24px;
+    }
+
+    .modal-body-tabs {
+        padding: 16px;
+    }
+
+    .modal-image-container {
+        max-height: 200px;
+    }
+
+    .modal-no-image {
+        height: 180px;
+    }
+
+    .detail-grid-modal {
+        gap: 10px;
+    }
+
+    .detail-item-modal {
+        padding: 12px;
+    }
+
+    .detail-label-modal {
+        font-size: 0.8rem;
+    }
+
+    .detail-value-modal {
+        font-size: 0.95rem;
+    }
+
+    .description-box-modal {
+        padding: 14px;
+    }
+
+    .modal-footer-tabs {
+        padding: 12px 16px;
+    }
+
+    .btn-close-modal {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 20px;
+    }
+
+    .lightbox-close {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+/* BOTÓN GPS */
+.gps-btn {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gps-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.gps-btn i {
+    animation: pulse-gps 1.5s infinite;
+}
+
+@keyframes pulse-gps {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+/* BOTÓN GPS DENTRO DEL SIDEBAR */
+.gps-btn-sidebar {
+    width: 100%;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transition: all 0.3s ease;
+}
+
+.gps-btn-sidebar:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.gps-btn-sidebar i {
+    font-size: 1.2rem;
+    animation: pulse-gps 1.5s infinite;
+}
+
+@keyframes pulse-gps {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}

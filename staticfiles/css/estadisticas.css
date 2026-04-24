@@ -1,0 +1,703 @@
+/* ========================================
+   ESTADÍSTICAS - ESTILO POWER BI / DASHBOARD
+   Versión Avanzada con diseño profesional
+   ======================================== */
+
+:root {
+    --primary: #4F46E5;
+    --primary-dark: #4338CA;
+    --primary-light: #6366F1;
+    --secondary: #06B6D4;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --purple: #8B5CF6;
+    --pink: #EC4899;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-300: #CBD5E1;
+    --gray-400: #94A3B8;
+    --gray-500: #64748B;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1E293B;
+    --gray-900: #0F172A;
+    
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --shadow-glow: 0 0 20px rgba(79, 70, 229, 0.3);
+}
+
+/* ========================================
+   HERO SECTION - ESTILO MODERNO
+   ======================================== */
+
+.stats-hero {
+    background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4F46E5 100%);
+    padding: 2rem 1rem 2.5rem;
+    color: white;
+    margin-bottom: -1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 1200'%3E%3Cpath fill='rgba(255,255,255,0.03)' d='M0 0 L1200 1200 M1200 0 L0 1200'/%3E%3C/svg%3E");
+    background-size: 30px 30px;
+    pointer-events: none;
+}
+
+.stats-hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.stats-main-title {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    color: white;
+    letter-spacing: -0.02em;
+}
+
+.stats-subtitle {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: clamp(0.85rem, 3vw, 1rem);
+    opacity: 0.85;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* ========================================
+   STATS CARDS - ESTILO KPI MODERNO
+   ======================================== */
+
+.stats-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 1000px) {
+    .stats-cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .stats-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.stat-card-big {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card-big:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.stat-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 0.15rem;
+    letter-spacing: -0.02em;
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+/* ========================================
+   FILTER BAR - MODERNO
+   ======================================== */
+
+.stats-container {
+    padding: 1.5rem 2rem 3rem;
+    background: var(--gray-50);
+    min-height: 100vh;
+}
+
+.filter-bar {
+    background: white;
+    border-radius: 16px;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+}
+
+.filter-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.badge-ubicacion {
+    background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
+    color: #4F46E5;
+    padding: 0.5rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    border: 1px solid #C7D2FE;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-gps-stats {
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.btn-gps-stats:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-clear-stats {
+    background: white;
+    color: #64748B;
+    border: 1px solid var(--gray-200);
+    padding: 0.5rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.btn-clear-stats:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+}
+
+/* ========================================
+   TABS - ESTILO PROFESIONAL
+   ======================================== */
+
+.custom-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: white;
+    padding: 0.4rem;
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.tab-btn:hover {
+    color: var(--primary);
+    background: var(--gray-100);
+}
+
+.tab-btn.active {
+    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    box-shadow: var(--shadow-md);
+}
+
+/* ========================================
+   TAB CONTENT - CRÍTICO PARA QUE FUNCIONE
+   ======================================== */
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ========================================
+   CHARTS GRID - DASHBOARD LAYOUT
+   ======================================== */
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.chart-card.full-width {
+    grid-column: span 2;
+}
+
+@media (max-width: 992px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-card.full-width {
+        grid-column: span 1;
+    }
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--gray-100);
+}
+
+.chart-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.chart-icon.gradient-danger {
+    background: linear-gradient(135deg, var(--danger), #DC2626);
+}
+
+.chart-icon.gradient-success {
+    background: linear-gradient(135deg, var(--success), #059669);
+}
+
+.chart-icon.gradient-warning {
+    background: linear-gradient(135deg, var(--warning), #D97706);
+}
+
+.chart-icon.gradient-secondary {
+    background: linear-gradient(135deg, var(--secondary), #0891B2);
+}
+
+.chart-title h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+    color: var(--gray-800);
+}
+
+.chart-title small {
+    font-size: 0.65rem;
+    color: var(--gray-500);
+}
+
+.chart-container {
+    position: relative;
+    height: 260px;
+}
+
+/* ========================================
+   RANKING TABLE - ESTILO PREMIUM
+   ======================================== */
+
+.ranking-table {
+    margin-top: 0.5rem;
+}
+
+.ranking-row {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--gray-100);
+    transition: all 0.2s ease;
+}
+
+.ranking-row:hover {
+    background: var(--gray-50);
+    transform: translateX(4px);
+}
+
+.ranking-position {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+}
+
+.ranking-info {
+    flex: 1;
+}
+
+.ranking-info strong {
+    font-size: 0.85rem;
+    color: var(--gray-800);
+}
+
+.ranking-info small {
+    font-size: 0.6rem;
+    color: var(--gray-500);
+}
+
+.ranking-value {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--gray-700);
+    background: var(--gray-100);
+    padding: 0.15rem 0.6rem;
+    border-radius: 16px;
+}
+
+/* ========================================
+   PROGRESS LIST - MODERNO
+   ======================================== */
+
+.progress-list {
+    margin-top: 0.5rem;
+}
+
+.progress-item {
+    margin-bottom: 1rem;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    font-weight: 500;
+}
+
+.progress-label span:first-child i {
+    margin-right: 0.4rem;
+    color: var(--primary);
+}
+
+.progress-custom {
+    height: 32px;
+    background: var(--gray-100);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-custom {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0.75rem;
+    color: white;
+    font-weight: 700;
+    font-size: 0.7rem;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 10px;
+}
+
+.progress-bar-custom[data-rank="1"] {
+    background: linear-gradient(135deg, var(--danger), #DC2626);
+}
+
+.progress-bar-custom[data-rank="2"] {
+    background: linear-gradient(135deg, var(--warning), #D97706);
+}
+
+.progress-bar-custom[data-rank="3"] {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+.progress-bar-custom[data-rank="4"] {
+    background: linear-gradient(135deg, var(--success), #059669);
+}
+
+/* ========================================
+   INSIGHTS GRID - MÉTRICAS AVANZADAS
+   ======================================== */
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .insights-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.insight-card {
+    text-align: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, white, var(--gray-50));
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--gray-200);
+    position: relative;
+    overflow: hidden;
+}
+
+.insight-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+.insight-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.insight-card:hover::after {
+    transform: scaleX(1);
+}
+
+.insight-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 0.75rem;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.insight-icon.success {
+    background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+    color: var(--success);
+}
+
+.insight-icon.primary {
+    background: linear-gradient(135deg, #EDE9FE, #DDD6FE);
+    color: var(--primary);
+}
+
+.insight-icon.secondary {
+    background: linear-gradient(135deg, #CFFAFE, #BAE6FD);
+    color: var(--secondary);
+}
+
+.insight-icon.warning {
+    background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+    color: var(--warning);
+}
+
+.insight-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.15rem;
+    letter-spacing: -0.02em;
+}
+
+.insight-value.success { color: var(--success); }
+.insight-value.primary { color: var(--primary); }
+.insight-value.secondary { color: var(--secondary); }
+.insight-value.warning { color: var(--warning); }
+
+.insight-label {
+    color: var(--gray-500);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+/* ========================================
+   ANIMACIONES PROFESIONALES
+   ======================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.4s ease forwards;
+    opacity: 0;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .stats-container {
+        padding: 1rem 1rem 2rem;
+    }
+    
+    .chart-container {
+        height: 220px;
+    }
+    
+    .custom-tabs {
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+    }
+    
+    .tab-btn {
+        white-space: nowrap;
+        padding: 0.5rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-number {
+        font-size: 1.2rem;
+    }
+    
+    .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+    
+    .stat-label {
+        font-size: 0.55rem;
+    }
+}
+
+/* ========================================
+   SCROLLBAR PERSONALIZADA
+   ======================================== */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 10px;
+}

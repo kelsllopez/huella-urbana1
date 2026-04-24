@@ -1,0 +1,317 @@
+:root {
+    --color-primary: #8B5CF6;
+    --color-secondary: #60A5FA;
+    --color-success: #10B981;
+    --color-danger: #EF4444;
+    --color-warning: #F59E0B;
+    --color-bg: #F9FAFB;
+    --color-text: #1F2937;
+    --color-border: #A78BFA;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+
+    min-height: 100vh;
+    overflow-x: hidden; /* Evita scroll horizontal */
+}
+
+/* NAVBAR RESPONSIVA */
+.navbar-custom {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #7C3AED 100%);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+    padding: 1rem 0;
+}
+
+.navbar-brand { 
+    font-size: 1.5rem; 
+    font-weight: 700; 
+    color: white !important; 
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin: 0.2rem;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.nav-btn:hover { 
+    background: white; 
+    color: var(--color-primary); 
+    transform: translateY(-2px); 
+}
+
+/* HEADER RESPONSIVO */
+.contact-header {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+}
+
+.contact-header h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.contact-header p {
+    padding: 0 1rem;
+    line-height: 1.5;
+}
+
+/* CONTACT CARDS RESPONSIVAS */
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    padding: 0 1rem;
+}
+
+.contact-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.6s ease;
+    width: 100%;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-title i {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+/* FORM RESPONSIVO */
+.form-group { margin-bottom: 1.2rem; }
+
+.form-label {
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-control, .form-select {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    outline: none;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+/* INFO ITEMS RESPONSIVOS */
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    background: var(--color-bg);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    background: rgba(139, 92, 246, 0.1);
+    transform: translateX(5px);
+}
+
+.info-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.info-content h5 {
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+}
+
+.info-content p {
+    color: #6B7280;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* SOCIAL BUTTONS RESPONSIVOS */
+.social-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+
+.social-btn {
+    padding: 0.8rem;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.social-btn i { 
+    font-size: 1.5rem; 
+    display: block; 
+    margin-bottom: 0.3rem; 
+}
+
+.social-facebook { background: linear-gradient(135deg, #3B5998, #2D4373); }
+.social-instagram { background: linear-gradient(135deg, #E1306C, #C13584); }
+.social-twitter { background: linear-gradient(135deg, #1DA1F2, #0C85D0); }
+.social-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+
+/* FAQ QUICK LINK */
+.faq-banner {
+    background: linear-gradient(135deg, var(--color-warning), #F59E0B);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.faq-banner h5 { 
+    font-weight: 800; 
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.btn-faq {
+    background: white;
+    color: var(--color-warning);
+    padding: 0.6rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.btn-faq:hover { transform: scale(1.05); }
+
+/* MEDIA QUERIES PARA DISPOSITIVOS MÓVILES */
+/* Para tablets pequeñas (≥ 768px) */
+@media (min-width: 768px) {
+    .contact-header h1 { font-size: 3rem; }
+    .contact-container { grid-template-columns: 1fr; }
+    .social-buttons { grid-template-columns: repeat(4, 1fr); }
+    .info-item { flex-direction: row; }
+    .navbar-brand { font-size: 1.8rem; }
+}
+
+/* Para tablets grandes (≥ 992px) */
+@media (min-width: 992px) {
+    .contact-container { 
+        grid-template-columns: 1fr 1fr; 
+        gap: 3rem;
+        padding: 0 2rem;
+    }
+    .contact-header { padding: 4rem 0 2rem; }
+    .contact-header h1 { font-size: 4rem; }
+    .contact-card { padding: 3rem; }
+    .card-title { font-size: 2rem; }
+    .social-buttons { grid-template-columns: repeat(4, 1fr); }
+    .navbar-custom { padding: 1.5rem 0; }
+}
+
+/* Para móviles muy pequeños (≤ 480px) */
+@media (max-width: 480px) {
+    .contact-header h1 { font-size: 2rem; }
+    .contact-card { padding: 1.5rem; }
+    .card-title { font-size: 1.3rem; }
+    .card-title i { width: 40px; height: 40px; font-size: 1.2rem; }
+    .form-control, .form-select { padding: 0.7rem 1rem; }
+    .info-item { padding: 1rem; }
+    .social-btn { padding: 0.7rem; font-size: 0.8rem; }
+    .social-btn i { font-size: 1.3rem; }
+    .nav-btn { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+    .btn-faq { padding: 0.5rem 1.2rem; }
+}

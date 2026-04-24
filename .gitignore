@@ -19,8 +19,8 @@ db.sqlite3
 db.sqlite3-journal
 
 # Archivos estáticos generados
-/staticfiles/
-/static/
+# /staticfiles/
+# /static/
 .DS_Store
 
 # Archivos de medios locales
