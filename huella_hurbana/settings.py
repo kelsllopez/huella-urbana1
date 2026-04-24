@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
 from pathlib import Path
 import os
 import cloudinary
@@ -18,24 +17,14 @@ import cloudinary.api
 from datetime import timedelta
 from decouple import config, Csv 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*','https://huella-urbana1.onrender.com/']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
-# ============================================
-# CONFIGURACIÓN DE CLOUDINARY
-# ============================================
 cloudinary.config( 
     cloud_name=config('CLOUDINARY_CLOUD_NAME'),
     api_key=config('CLOUDINARY_API_KEY'),
@@ -46,9 +35,6 @@ cloudinary.config(
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 MEDIA_URL = "/media/"
 
-# ============================================
-# CONFIGURACIÓN DE CACHE (REQUERIDO PARA RATELIMIT)
-# ============================================
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
@@ -56,16 +42,10 @@ CACHES = {
     }
 }
 
-# ============================================
-# CONFIGURACIÓN DE LOGIN
-# ============================================
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# ============================================
-# APLICACIONES INSTALADAS
-# ============================================
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
@@ -76,25 +56,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.sites',
-    
-    # Apps de terceros
     'cloudinary',
     'cloudinary_storage',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'axes',  # Protección contra fuerza bruta
-        'csp',            # Content Security Policy
-
-    # Tu app
+    'axes',
+    'csp',
     'server',
-        'rest_framework',  # ← Agregar esto
-            'corsheaders',  # ← Nuevo
-
-
-
+    'rest_framework',
+    'corsheaders',
 ]
-
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -105,15 +77,11 @@ REST_FRAMEWORK = {
     ],
 }
 
-
-# ============================================
-# MIDDLEWARE
-# ============================================
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # ← Debe ir AL PRINCIPIO
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'csp.middleware.CSPMiddleware',                     # Content Security Policy
+    'csp.middleware.CSPMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -121,65 +89,44 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    'axes.middleware.AxesMiddleware',  # ← DEBE SER EL ÚLTIMO
+    'axes.middleware.AxesMiddleware',
 ]
 
-# Permitir todas las conexiones (para desarrollo)
 CORS_ALLOW_ALL_ORIGINS = True
 
-# O ser más específico:
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "https://huella-urbana.onrender.com",
 ]
 
-# ============================================
-# BACKENDS DE AUTENTICACIÓN (UNIFICADOS)
-# ============================================
 AUTHENTICATION_BACKENDS = [
-    'axes.backends.AxesStandaloneBackend',      # Protección contra fuerza bruta
-    'django.contrib.auth.backends.ModelBackend', # Backend por defecto de Django
-    'allauth.account.auth_backends.AuthenticationBackend',  # Backend de allauth
+    'axes.backends.AxesStandaloneBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-# ============================================
-# CONFIGURACIÓN DE DJANGO-AXES
-# ============================================
 AXES_ENABLED = True
-AXES_FAILURE_LIMIT = 5  # Número de intentos fallidos permitidos
-AXES_COOLOFF_TIME = 1  # Horas de bloqueo
-AXES_LOCKOUT_PARAMETERS = ["ip_address", "username"]  # Bloquear por IP y usuario
-AXES_RESET_ON_SUCCESS = True  # Reiniciar contador al iniciar sesión correctamente
-AXES_ENABLE_ACCESS_FAILURE_LOG = True  # Registrar intentos fallidos
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1
+AXES_LOCKOUT_PARAMETERS = ["ip_address", "username"]
+AXES_RESET_ON_SUCCESS = True
+AXES_ENABLE_ACCESS_FAILURE_LOG = True
 
-# ============================================
-# CONFIGURACIÓN DE DJANGO-ALLAUTH
-# ============================================
 SITE_ID = 1
 
-# Configuraciones de allauth (versión 0.63+)
 ACCOUNT_LOGIN_METHODS = {'username', 'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
-ACCOUNT_LOGOUT_ON_GET = True  # Permitir logout por GET
+ACCOUNT_LOGOUT_ON_GET = True
 
 ACCOUNT_RATE_LIMITS = {
-    'login_failed': '5/300s',  # 5 intentos en 300 segundos (5 minutos)
+    'login_failed': '5/300s',
 }
 
-# Protección contra clickjacking
 X_FRAME_OPTIONS = 'DENY'
-
-# Protección contra MIME sniffing
 SECURE_CONTENT_TYPE_NOSNIFF = True
-
-# Protección XSS en navegadores antiguos
 SECURE_BROWSER_XSS_FILTER = True
 
-
-# ============================================
-# CONTENT SECURITY POLICY (CSP) - NUEVO FORMATO
-# ============================================
 CONTENT_SECURITY_POLICY = {
     'DIRECTIVES': {
         'default-src': ("'self'",),
@@ -225,19 +172,10 @@ CONTENT_SECURITY_POLICY = {
     }
 }
 
-# ============================================
-# CONFIGURACIÓN DE URLs
-# ============================================
 ROOT_URLCONF = 'huella_hurbana.urls'
 
-
-# Política de Referrer
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
-
-# ============================================
-# CONFIGURACIÓN DE TEMPLATES
-# ============================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -255,9 +193,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'huella_hurbana.wsgi.application'
 
-# ============================================
-# BASE DE DATOS
-# ============================================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -265,9 +200,6 @@ DATABASES = {
     }
 }
 
-# ============================================
-# VALIDACIÓN DE CONTRASEÑAS
-# ============================================
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -283,35 +215,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# ============================================
-# INTERNACIONALIZACIÓN
-# ============================================
 LANGUAGE_CODE = 'es-es'
 TIME_ZONE = 'America/Santiago'
 USE_I18N = True
 USE_TZ = True
 
-# ============================================
-# ARCHIVOS ESTÁTICOS
-# ============================================
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+WHITENOISE_MANIFEST_STRICT = False
 
-# ============================================
-# CONFIGURACIÓN POR DEFECTO PARA PK
-# ============================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
-# ============================================
-# LOGGING DE SEGURIDAD
-# ============================================
-# Crear directorio de logs si no existe
 LOGS_DIR = BASE_DIR / 'logs'
 if not LOGS_DIR.exists():
     LOGS_DIR.mkdir(parents=True)
@@ -338,7 +256,7 @@ LOGGING = {
             'level': 'WARNING',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOGS_DIR / 'security.log',
-            'maxBytes': 1024 * 1024 * 10,                 # 10MB
+            'maxBytes': 1024 * 1024 * 10,
             'backupCount': 5,
             'formatter': 'security',
         },
@@ -346,7 +264,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': LOGS_DIR / 'axes.log',
-            'maxBytes': 1024 * 1024 * 10,                 # 10MB
+            'maxBytes': 1024 * 1024 * 10,
             'backupCount': 5,
             'formatter': 'verbose',
         },
@@ -375,9 +293,6 @@ LOGGING = {
     },
 }
 
-# ============================================
-# CONFIGURACIÓN DE JAZZMIN (Opcional)
-# ============================================
 JAZZMIN_SETTINGS = {
     "site_title": "Huella Urbana Admin",
     "site_header": "Huella Urbana",
