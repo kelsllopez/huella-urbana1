@@ -52,7 +52,6 @@
                 <div class="stat-label">Ciudades Afectadas</div>
             </div>
 
-            <!-- 🆕 NUEVA TARJETA: Ataques a Personas -->
             <div class="stat-card-big fade-in-up" style="animation-delay: 0.4s;">
                 <div class="stat-icon" style="background: linear-gradient(135deg, #EF4444, #DC2626);">
                     <i class="fas fa-user-injured"></i>
@@ -66,7 +65,6 @@
 
 <div class="container stats-container">
     
-    <!-- Barra de filtro por ubicación -->
     <div class="filter-bar">
         <div class="filter-bar-content">
             <div class="filter-location-badge">
@@ -88,7 +86,6 @@
         </div>
     </div>
 
-    <!-- Tabs -->
     <div class="custom-tabs">
         <button class="tab-btn active" data-tab="general">
             <i class="fas fa-chart-line"></i> General
@@ -104,7 +101,6 @@
         </button>
     </div>
 
-    <!-- Tab General -->
     <div id="tab-general" class="tab-content active">
         <div class="charts-grid">
             
@@ -176,7 +172,6 @@
         </div>
     </div>
 
-    <!-- Tab Temporal -->
     <div id="tab-temporal" class="tab-content">
         <div class="charts-grid">
             
@@ -228,7 +223,6 @@
         </div>
     </div>
 
-    <!-- Tab Geográfico -->
     <div id="tab-geografico" class="tab-content">
         <div class="charts-grid">
             
@@ -268,7 +262,6 @@
         </div>
     </div>
 
-    <!-- Tab Insights -->
     <div id="tab-insights" class="tab-content">
         <div class="charts-grid">
             
@@ -329,7 +322,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="{% static 'js/estadisticas.js' %}"></script>
 <script>
-    // Datos desde Django para los gráficos
     window.STATS_DATA = {
         meses: {{ meses|safe }},
         totalesMes: {{ totales_mes|safe }},
@@ -345,7 +337,6 @@
         totalesDias: {{ totales_dias|safe }}
     };
     
-    // URLs para filtros
     window.STATS_URLS = {
         limpiarFiltro: "{{ request.path }}"
     };

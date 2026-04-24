@@ -1,9 +1,4 @@
-"""
-Tests unitarios para la aplicación Huella Urbana.
-Versión corregida - Todos los tests deberían pasar.
-"""
-
-import json  # ← FALTABA ESTA IMPORTACIÓN
+import json  
 from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 from django.contrib.auth.models import User

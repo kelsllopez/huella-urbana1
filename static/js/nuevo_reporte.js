@@ -1,15 +1,6 @@
-/**
- * ========================================
- * NUEVO REPORTE - FUNCIONALIDAD COMPLETA
- * ========================================
- */
-
 (function () {
     'use strict';
 
-    // ========================================
-    // ELEMENTOS DEL DOM
-    // ========================================
     const form = document.getElementById('reportForm');
     const steps = document.querySelectorAll('.step');
     const stepContents = document.querySelectorAll('.step-content');
@@ -38,10 +29,6 @@
     const latInput = document.getElementById('id_latitud');
     const lngInput = document.getElementById('id_longitud');
     const btnGPS = document.getElementById('btnObtenerUbicacion');
-
-    // ========================================
-    // VARIABLES GLOBALES
-    // ========================================
     let map, marker;
     let currentStep = 1;
     const totalSteps = 3;
@@ -50,9 +37,6 @@
     const DEFAULT_LAT = -33.4489;
     const DEFAULT_LNG = -70.6693;
 
-    // ========================================
-    // UTILIDADES DE ERROR
-    // ========================================
     function clearAllErrors() {
         document.querySelectorAll('.form-error').forEach(el => el.textContent = '');
         document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
@@ -65,9 +49,6 @@
         if (field) field.classList.add('input-error');
     }
 
-    // ========================================
-    // VALIDACIÓN DE FECHA
-    // ========================================
     if (fechaInput) {
         const today = new Date().toISOString().split('T')[0];
         fechaInput.setAttribute('max', today);
@@ -86,9 +67,6 @@
         });
     }
 
-    // ========================================
-    // CONTADOR DE DESCRIPCIÓN
-    // ========================================
     if (descripcionInput) {
         descripcionInput.addEventListener('input', function () {
             const length = this.value.length;
@@ -106,9 +84,6 @@
         descripcionInput.dispatchEvent(new Event('input'));
     }
 
-    // ========================================
-    // TOGGLE ANÓNIMO
-    // ========================================
     function toggleContactFields() {
         if (!anonimoCheck || !contactFields) return;
         const isAnonimo = anonimoCheck.checked;
@@ -123,9 +98,6 @@
         toggleContactFields();
     }
 
-    // ========================================
-    // SEVERIDAD VISUAL
-    // ========================================
     severityOptions.forEach(option => {
         option.addEventListener('click', function () {
             if (gravedadSelect) gravedadSelect.value = this.dataset.value;
@@ -139,9 +111,6 @@
         if (sel) sel.classList.add('selected');
     }
 
-    // ========================================
-    // MANEJO DE FOTOS
-    // ========================================
     function addFiles(newFiles) {
         newFiles.forEach(file => {
             if (selectedFiles.length >= 5) {
@@ -194,9 +163,6 @@
         fileInput.addEventListener('change', (e) => addFiles(Array.from(e.target.files)));
     }
 
-    // ========================================
-    // MAPA LEAFLET
-    // ========================================
     function initMap() {
         if (mapInitialized) return;
 
@@ -295,9 +261,6 @@
     
     if (btnGPS) btnGPS.addEventListener('click', obtenerGPS);
 
-    // ========================================
-    // VALIDACIÓN POR PASOS
-    // ========================================
     function validateStep(step) {
         clearAllErrors();
         let isValid = true;
@@ -355,9 +318,6 @@
         return isValid;
     }
 
-    // ========================================
-    // NAVEGACIÓN POR PASOS
-    // ========================================
     function updateSteps() {
         steps.forEach((s, i) => {
             s.classList.remove('active', 'completed');
@@ -403,9 +363,6 @@
         });
     }
 
-    // ========================================
-    // ENVÍO DEL FORMULARIO
-    // ========================================
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -528,8 +485,5 @@
         }
     });
 
-    // ========================================
-    // INICIALIZACIÓN
-    // ========================================
     updateSteps();
 })();

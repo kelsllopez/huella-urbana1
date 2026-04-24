@@ -1,6 +1,3 @@
-// ===========================================
-// MOSTRAR/OCULTAR CONTRASEÑA
-// ===========================================
 document.addEventListener("DOMContentLoaded", () => {
     const togglePassword = document.getElementById("togglePassword");
     const passwordInput = document.getElementById("password");
@@ -10,17 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
             passwordInput.setAttribute("type", type);
             
-            // Cambiar icono
             this.classList.toggle("fa-eye");
             this.classList.toggle("fa-eye-slash");
         });
     }
 
-    // ===========================================
-    // MANEJO DE ERRORES DE DJANGO Y CONTEXTO
-    // ===========================================
-    
-    // Errores del formulario Django (form.errors)
     const djangoErrors = document.querySelectorAll(".django-error");
     
     djangoErrors.forEach(err => {
@@ -30,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
         mostrarError(field, errorText);
     });
     
-    // Errores pasados directamente en el contexto (username_error, password_error)
     const usernameContextError = document.getElementById("username-context-error");
     const passwordContextError = document.getElementById("password-context-error");
     
@@ -48,9 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     
-    // ===========================================
-    // FUNCIÓN AUXILIAR PARA MOSTRAR ERRORES
-    // ===========================================
     function mostrarError(field, errorText) {
         if (field === "username") {
             const usernameError = document.getElementById("username-error");
@@ -83,24 +70,18 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
-    
-    // ===========================================
-    // LIMPIAR ERRORES AL ESCRIBIR
-    // ===========================================
+
     const inputs = document.querySelectorAll(".form-control-custom");
     
     inputs.forEach(input => {
         input.addEventListener("input", function() {
-            // Quitar clase de error del input
             this.classList.remove("error");
             
-            // Ocultar mensaje de error correspondiente
             const errorDiv = this.closest(".form-group").querySelector(".error-message");
             if (errorDiv) {
                 errorDiv.classList.remove("show");
             }
             
-            // Ocultar error general si existe
             const generalError = document.getElementById("general-error");
             if (generalError) {
                 generalError.classList.remove("show");
@@ -108,9 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ===========================================
-    // VALIDACIÓN BÁSICA DEL FORMULARIO
-    // ===========================================
     const loginForm = document.getElementById("loginForm");
     
     if (loginForm) {
@@ -144,15 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ===========================================
-// FUNCIONES DE LOGIN SOCIAL (PLACEHOLDER)
-// ===========================================
 function loginWithGoogle() {
     alert("Función de login con Google no implementada aún");
-    // Aquí irá la lógica de OAuth con Google
 }
 
 function loginWithFacebook() {
     alert("Función de login con Facebook no implementada aún");
-    // Aquí irá la lógica de OAuth con Facebook
 }

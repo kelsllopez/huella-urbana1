@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from .models import NuevoReporte, Foto
 
 class NuevoReporteForm(forms.ModelForm):
-    """📝 Formulario para crear reportes con validación"""
 
     class Meta:
         model = NuevoReporte

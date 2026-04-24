@@ -1,15 +1,4 @@
-/**
- * ========================================
- * ESTADÍSTICAS - FUNCIONALIDAD
- * ========================================
- */
-
-// Variables globales
 let charts = {};
-
-// ========================================
-// INICIALIZACIÓN
-// ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     inicializarTabs();
@@ -43,9 +32,6 @@ function inicializarBotones() {
     }
 }
 
-// ========================================
-// FUNCIONES DE TABS
-// ========================================
 
 function showTab(tabName) {
     // Ocultar todos los contenidos
@@ -53,24 +39,20 @@ function showTab(tabName) {
         tab.classList.remove('active');
     });
     
-    // Desactivar todos los botones
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     
-    // Activar el contenido correspondiente
     const activeTab = document.getElementById(`tab-${tabName}`);
     if (activeTab) {
         activeTab.classList.add('active');
     }
     
-    // Activar el botón correspondiente
     const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
     if (activeBtn) {
         activeBtn.classList.add('active');
     }
     
-    // Actualizar gráficos si es necesario
     actualizarGraficosVisibles();
 }
 
@@ -81,10 +63,6 @@ function actualizarGraficosVisibles() {
         }
     });
 }
-
-// ========================================
-// FILTRO POR UBICACIÓN GPS
-// ========================================
 
 async function filtrarPorUbicacion() {
     const btn = document.getElementById('btnGPSStats');
@@ -157,9 +135,6 @@ function limpiarFiltro() {
     window.location.href = window.STATS_URLS?.limpiarFiltro || window.location.pathname;
 }
 
-// ========================================
-// FUNCIONES DE UI PARA BOTONES
-// ========================================
 
 function setButtonLoading(btn, isLoading, text) {
     if (!btn) return;
@@ -199,14 +174,9 @@ function mostrarErrorGeolocalizacion(error) {
     alert('❌ ' + msg);
 }
 
-// ========================================
-// INICIALIZACIÓN DE GRÁFICOS
-// ========================================
-
 function inicializarGraficos() {
     const data = window.STATS_DATA || {};
     
-    // Gráfico de Barras (Reportes por Mes)
     const ctxBarras = document.getElementById('chartBarras')?.getContext('2d');
     if (ctxBarras && data.meses && data.totalesMes) {
         charts.barras = new Chart(ctxBarras, {
@@ -240,10 +210,6 @@ function inicializarGraficos() {
         });
     }
     
-    // ============================================
-    // GRÁFICO DE DONA ACTUALIZADO (4 CATEGORÍAS)
-    // Incluye: Personas, Graves, Moderados, Leves
-    // ============================================
     const ctxDona = document.getElementById('chartDona')?.getContext('2d');
     if (ctxDona) {
         charts.dona = new Chart(ctxDona, {
@@ -258,10 +224,10 @@ function inicializarGraficos() {
                         data.leves || 0
                     ],
                     backgroundColor: [
-                        'rgba(239, 68, 68, 0.85)',   // Rojo fuerte - Personas
-                        'rgba(239, 68, 68, 0.65)',   // Rojo claro - Graves
-                        'rgba(245, 158, 11, 0.8)',   // Naranja - Moderados
-                        'rgba(96, 165, 250, 0.8)'    // Azul - Leves
+                        'rgba(239, 68, 68, 0.85)',   
+                        'rgba(239, 68, 68, 0.65)',  
+                        'rgba(245, 158, 11, 0.8)',  
+                        'rgba(96, 165, 250, 0.8)'    
                     ],
                     borderWidth: 2,
                     borderColor: '#fff'
@@ -298,7 +264,6 @@ function inicializarGraficos() {
         });
     }
     
-    // Gráfico de Línea (Tendencia Temporal)
     const ctxLinea = document.getElementById('chartLinea')?.getContext('2d');
     if (ctxLinea && data.mesesTendencia && data.totalesTendencia) {
         charts.linea = new Chart(ctxLinea, {
@@ -348,7 +313,6 @@ function inicializarGraficos() {
         });
     }
     
-    // Gráfico de Horas
     const ctxHoras = document.getElementById('chartHoras')?.getContext('2d');
     if (ctxHoras && data.etiquetasHoras && data.totalesHoras) {
         charts.horas = new Chart(ctxHoras, {
@@ -382,7 +346,6 @@ function inicializarGraficos() {
         });
     }
     
-    // Gráfico de Días de la Semana
     const ctxDias = document.getElementById('chartDias')?.getContext('2d');
     if (ctxDias && data.diasOrdenados && data.totalesDias) {
         charts.dias = new Chart(ctxDias, {
@@ -417,9 +380,6 @@ function inicializarGraficos() {
     }
 }
 
-// ========================================
-// EXPORTACIÓN PARA DEBUG
-// ========================================
 
 window.showTab = showTab;
 window.filtrarPorUbicacion = filtrarPorUbicacion;

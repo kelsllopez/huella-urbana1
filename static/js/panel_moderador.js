@@ -1,14 +1,9 @@
-// panel_moderador.js - Funcionalidad completa del panel de moderación
-
 document.addEventListener('DOMContentLoaded', function() {
     inicializarFiltros();
     inicializarEventListeners();
     inicializarFiltrosDesdeURL();
 });
 
-// ========================================
-// VARIABLES GLOBALES
-// ========================================
 
 let currentFilters = {
     status: 'pendiente',
@@ -43,19 +38,14 @@ const filterLabels = {
     }
 };
 
-// ========================================
-// INICIALIZACIÓN
-// ========================================
 
 function inicializarFiltros() {
-    // Cerrar dropdowns al hacer clic fuera
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.filter-dropdown')) {
             document.querySelectorAll('.filter-dropdown').forEach(d => d.classList.remove('open'));
         }
     });
 
-    // Configurar botones de filtro
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -70,7 +60,6 @@ function inicializarFiltros() {
         });
     });
 
-    // Configurar opciones de filtro
     document.querySelectorAll('.filter-option').forEach(opt => {
         opt.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -108,7 +97,6 @@ function inicializarFiltrosDesdeURL() {
 }
 
 function inicializarEventListeners() {
-    // Event listeners para botones de acción en reportes (delegación de eventos)
     document.addEventListener('click', function(e) {
         const target = e.target.closest('button');
         if (!target) return;
@@ -144,7 +132,6 @@ function inicializarEventListeners() {
         }
     });
     
-    // Event listeners para tabs en el modal
     document.addEventListener('click', function(e) {
         const tabButton = e.target.closest('.tab-button');
         if (tabButton && tabButton.dataset.tab) {
@@ -152,7 +139,6 @@ function inicializarEventListeners() {
         }
     });
     
-    // Event listeners para fotos
     document.addEventListener('click', function(e) {
         const photoCard = e.target.closest('.photo-card');
         if (photoCard) {
@@ -167,9 +153,6 @@ function inicializarEventListeners() {
     });
 }
 
-// ========================================
-// FUNCIONES DE FILTROS
-// ========================================
 
 function updateFilterUI() {
     updateDropdownUI('statusFilter', 'status', currentFilters.status);
@@ -273,9 +256,6 @@ function applyFilters() {
     window.location.search = params.toString();
 }
 
-// ========================================
-// FUNCIONES DE UTILIDAD
-// ========================================
 
 function getCookie(name) {
     let cookieValue = null;
@@ -295,10 +275,6 @@ function getCookie(name) {
 function getCSRFToken() {
     return getCookie('csrftoken');
 }
-
-// ========================================
-// FUNCIONES DE ACCIONES DE REPORTES
-// ========================================
 
 function aprobar(id) {
     Swal.fire({
@@ -425,10 +401,6 @@ function eliminarReporte(id, titulo) {
         }
     });
 }
-
-// ========================================
-// FUNCIONES DE FOTOS
-// ========================================
 
 function censurarTodasFotos(reporteId) {
     Swal.fire({
@@ -600,12 +572,7 @@ function mostrarImagen(src) {
     });
 }
 
-// ========================================
-// FUNCIONES DEL MODAL DE DETALLES
-// ========================================
-
 function switchTab(button, tabId) {
-    // Remover clase active de todos los botones
     const tabContainer = button.closest('.tabs-container');
     if (tabContainer) {
         tabContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
@@ -615,7 +582,6 @@ function switchTab(button, tabId) {
     
     button.classList.add('active');
     
-    // Remover clase active de todos los contenidos
     const modalContent = button.closest('.modal-premium');
     if (modalContent) {
         modalContent.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -635,17 +601,14 @@ function verDetalles(id) {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = modalHTML;
 
-            // Llenar datos básicos
             tempDiv.querySelector('#modal-titulo').textContent = data.titulo || 'Sin título';
             tempDiv.querySelector('#modal-fecha').textContent = `${data.fecha} ${data.hora ? '- ' + data.hora : ''}`;
 
-            // Tab Incidente
             tempDiv.querySelector('#modal-tipo-animal').textContent = data.tipo_animal || "No especificado";
             tempDiv.querySelector('#modal-cantidad-perros').textContent = data.cantidad_perros || "Sin dato";
             tempDiv.querySelector('#modal-gravedad').textContent = data.gravedad || "Sin dato";
             tempDiv.querySelector('#modal-direccion').textContent = data.direccion || "No indicada";
 
-            // Tab Reportante
             tempDiv.querySelector('#modal-nombre').textContent = 
                 data.nombre_reportante && data.nombre_reportante.trim() !== "" ? data.nombre_reportante : "Anónimo";
             tempDiv.querySelector('#modal-email').textContent = 
@@ -655,7 +618,6 @@ function verDetalles(id) {
             tempDiv.querySelector('#modal-anonimo').textContent = data.anonimo ? "Sí" : "No";
             tempDiv.querySelector('#modal-usuario').textContent = data.usuario ? data.usuario : "No asociado";
 
-            // Tab Ubicación
             tempDiv.querySelector('#modal-ciudad').textContent = data.ciudad || "No especificada";
             tempDiv.querySelector('#modal-direccion-ubicacion').textContent = data.direccion || "No indicada";
             tempDiv.querySelector('#modal-pais').textContent = data.pais || "Chile";
@@ -666,7 +628,6 @@ function verDetalles(id) {
             mapLink.href = data.latitud && data.longitud ? 
                 `https://www.google.com/maps?q=${data.latitud},${data.longitud}` : "#";
 
-            // Tab Descripción
             tempDiv.querySelector('#modal-descripcion').textContent = 
                 data.descripcion && data.descripcion.trim() !== "" ? data.descripcion : "Sin descripción proporcionada";
 
@@ -682,7 +643,6 @@ function verDetalles(id) {
                     popup: "swal-detalles"
                 },
                 didOpen: () => {
-                    // Inicializar tabs en el modal abierto
                     document.querySelectorAll('.swal-detalles .tab-button').forEach(btn => {
                         btn.addEventListener('click', function() {
                             const tabId = this.dataset.tab;

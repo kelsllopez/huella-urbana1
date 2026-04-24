@@ -1,13 +1,5 @@
-/**
- * ========================================
- * CONSULTAR REPORTES - FUNCIONALIDAD
- * ========================================
- */
-
-// Cache de reportes para evitar múltiples llamadas
 const reportesCache = {};
 
-// Elementos del DOM
 const DOM = {
     form: document.getElementById('consultaForm'),
     emailInput: document.getElementById('emailInput'),
@@ -21,26 +13,20 @@ const DOM = {
     btnCerrarModal: document.getElementById('btnCerrarModal')
 };
 
-// ========================================
-// INICIALIZACIÓN
-// ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
     inicializarEventos();
 });
 
 function inicializarEventos() {
-    // Formulario de consulta
     if (DOM.form) {
         DOM.form.addEventListener('submit', consultarReportes);
     }
     
-    // Cerrar modal con botón
     if (DOM.btnCerrarModal) {
         DOM.btnCerrarModal.addEventListener('click', cerrarModal);
     }
     
-    // Cerrar modal con clic fuera
     if (DOM.modalDetalle) {
         DOM.modalDetalle.addEventListener('click', (e) => {
             if (e.target === DOM.modalDetalle) {
@@ -49,22 +35,17 @@ function inicializarEventos() {
         });
     }
     
-    // Cerrar modal con tecla Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && DOM.modalDetalle?.classList.contains('visible')) {
             cerrarModal();
         }
     });
     
-    // Validación en tiempo real del email
     if (DOM.emailInput) {
         DOM.emailInput.addEventListener('input', validarEmailInput);
     }
 }
 
-// ========================================
-// VALIDACIÓN
-// ========================================
 
 function validarEmailInput() {
     const email = DOM.emailInput.value.trim();
@@ -83,9 +64,6 @@ function validarEmail(email) {
     return email.includes('@') && email.includes('.');
 }
 
-// ========================================
-// CONSULTAR REPORTES
-// ========================================
 
 async function consultarReportes(event) {
     event.preventDefault();
@@ -103,7 +81,6 @@ async function consultarReportes(event) {
         return;
     }
     
-    // Estado de carga
     setLoadingState(true);
     
     try {
@@ -150,10 +127,6 @@ function setLoadingState(isLoading) {
         DOM.btnConsultar.disabled = false;
     }
 }
-
-// ========================================
-// MOSTRAR RESULTADOS
-// ========================================
 
 function mostrarResultados(reportes, email) {
     if (reportes.length === 0) {
@@ -236,9 +209,6 @@ function crearMotivoRechazo(motivo) {
     `;
 }
 
-// ========================================
-// VER DETALLE (Event Delegation)
-// ========================================
 
 document.addEventListener('click', (e) => {
     const card = e.target.closest('.reporte-card-modern');
@@ -285,9 +255,6 @@ async function verDetalle(id) {
     }
 }
 
-// ========================================
-// MODAL
-// ========================================
 
 function abrirModal() {
     DOM.modalDetalle.classList.add('visible');
@@ -462,9 +429,6 @@ function crearBotonGoogleMaps(reporte) {
     `;
 }
 
-// ========================================
-// NAVEGACIÓN AL MAPA
-// ========================================
 
 document.addEventListener('click', (e) => {
     const link = e.target.closest('[data-action="ir-mapa"]');
@@ -489,9 +453,6 @@ function irAlMapaConReporte(reporteId, latitud, longitud) {
     window.location.href = `${window.URLS.mapa}?reporte=${reporteId}`;
 }
 
-// ========================================
-// UTILIDADES
-// ========================================
 
 function getCSRFToken() {
     const csrfInput = document.querySelector('[name=csrfmiddlewaretoken]');
@@ -506,9 +467,6 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// ========================================
-// EXPORTACIÓN PARA DEBUG
-// ========================================
 
 window.consultarReportes = consultarReportes;
 window.cerrarModal = cerrarModal;

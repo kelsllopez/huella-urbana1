@@ -1225,3 +1225,267 @@ body {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
 }
+
+
+/* ============================================================
+   ESTILOS ADICIONALES PARA EL MAPA
+   ============================================================ */
+
+/* Grid de fotos en el modal */
+.modal-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.modal-photo-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid #E5E7EB;
+}
+
+.modal-photo-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: #8B5CF6;
+}
+
+.modal-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-photo-item.censurada {
+    border-color: #F59E0B;
+}
+
+.modal-photo-img.blur {
+    filter: blur(15px);
+}
+
+/* Overlay para imágenes censuradas */
+.censored-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    gap: 5px;
+    backdrop-filter: blur(2px);
+}
+
+.censored-overlay i {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.censored-overlay span {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.censored-overlay small {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-top: 5px;
+}
+
+/* Overlay hover para fotos */
+.photo-hover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(139, 92, 246, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.photo-hover-overlay i {
+    color: white;
+    font-size: 2rem;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s;
+}
+
+.modal-photo-item:hover .photo-hover-overlay {
+    background: rgba(139, 92, 246, 0.5);
+}
+
+.modal-photo-item:hover .photo-hover-overlay i {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Popup - Imagen pixelada (censurada) */
+.popup-blur-container {
+    position: relative;
+    margin: 8px 0;
+    cursor: pointer;
+}
+
+.popup-blur-img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    filter: blur(15px);
+}
+
+.popup-blur-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+/* Mensaje de imagen oculta */
+.popup-hidden-message {
+    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+    border: 2px solid #FCA5A5;
+    border-radius: 12px;
+    padding: 16px 12px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.popup-hidden-message i {
+    font-size: 2rem;
+    color: #DC2626;
+    margin-bottom: 8px;
+}
+
+.popup-hidden-message p {
+    margin: 5px 0;
+    color: #991B1B;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.popup-hidden-message small {
+    color: #7F1D1D;
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+/* Badge de gravedad */
+.severity-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.severity-badge.severity-grave {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.severity-badge.severity-moderado {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+.severity-badge.severity-leve {
+    background: #DBEAFE;
+    color: #2563EB;
+}
+
+/* Filtros por tipo de víctima - Colores personalizados */
+.filter-chip[data-filter="persona"] {
+    background: #FEE2E2;
+    border-color: #EF4444;
+    color: #DC2626;
+}
+
+.filter-chip[data-filter="persona"]:hover,
+.filter-chip[data-filter="persona"].active {
+    background: #EF4444;
+    border-color: #EF4444;
+    color: white;
+}
+
+.filter-chip[data-filter="perro"] {
+    background: #EDE9FE;
+    border-color: #8B5CF6;
+    color: #7C3AED;
+}
+
+.filter-chip[data-filter="perro"]:hover,
+.filter-chip[data-filter="perro"].active {
+    background: #8B5CF6;
+    border-color: #8B5CF6;
+    color: white;
+}
+
+.filter-chip[data-filter="gato"] {
+    background: #D1FAE5;
+    border-color: #10B981;
+    color: #059669;
+}
+
+.filter-chip[data-filter="gato"]:hover,
+.filter-chip[data-filter="gato"].active {
+    background: #10B981;
+    border-color: #10B981;
+    color: white;
+}
+
+.filter-chip[data-filter="otro"] {
+    background: #FEF3C7;
+    border-color: #F59E0B;
+    color: #D97706;
+}
+
+.filter-chip[data-filter="otro"]:hover,
+.filter-chip[data-filter="otro"].active {
+    background: #F59E0B;
+    border-color: #F59E0B;
+    color: white;
+}
+
+/* Efecto de actualización del contador */
+#totalIncidentes {
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-photos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-photos-grid {
+        grid-template-columns: 1fr;
+    }
+}

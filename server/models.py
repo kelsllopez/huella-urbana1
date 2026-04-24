@@ -1,13 +1,3 @@
-"""
-Modelos de la base de datos.
-Organizados por categorías:
-1. Modelo: PerfilUsuario
-2. Modelo: NuevoReporte
-3. Modelo: Foto
-4. Modelo: ModeracionLog
-"""
-
-
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -19,7 +9,6 @@ from cloudinary.models import CloudinaryField
 
 
 class PerfilUsuario(models.Model):
-    """Perfil extendido para usuarios del sistema."""
 
     ROLES = [
         ('moderador', 'Moderador'),
@@ -51,7 +40,6 @@ class PerfilUsuario(models.Model):
 
 
 class NuevoReporte(models.Model):
-    """Modelo principal para reportes de ataques de perros."""
 
     TIPO_ANIMAL_CHOICES = [
         ('persona', 'Persona (humano)'),

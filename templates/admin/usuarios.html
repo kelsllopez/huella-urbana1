@@ -12,7 +12,6 @@
 
 <div class="page-container">
     
-    <!-- HEADER PROFESIONAL -->
     <div class="page-header">
         <div class="header-left">
             <h1 class="page-title">
@@ -22,14 +21,13 @@
             <p class="page-subtitle">Administra los roles y permisos de los miembros de la plataforma</p>
         </div>
         <div class="header-right">
-            <button class="btn-primary" onclick="addUser()">
+            <button class="btn-primary" id="btnAddUser">
                 <i class="fas fa-plus-circle"></i>
                 Nuevo Usuario
             </button>
         </div>
     </div>
 
-    <!-- BARRA DE HERRAMIENTAS -->
     <div class="toolbar">
         <div class="search-wrapper">
             <i class="fas fa-search search-icon"></i>
@@ -51,11 +49,9 @@
                 <span>Moderadores</span>
                 <span class="badge">{{ moderadores_count }}</span>
             </button>
-
         </div>
     </div>
 
-    <!-- TABLA DE USUARIOS -->
     <div class="table-container">
         <table class="users-table">
             <thead>
@@ -73,7 +69,10 @@
                 <tr class="user-row" 
                     data-role="{{ usuario.perfil.rol }}"
                     data-name="{{ usuario.get_full_name|lower }} {{ usuario.username|lower }}"
-                    data-email="{{ usuario.email|lower }}">
+                    data-email="{{ usuario.email|lower }}"
+                    data-id="{{ usuario.id }}"
+                    data-fullname="{{ usuario.get_full_name|default:usuario.username }}"
+                    data-username="{{ usuario.username }}">
                     
                     <td class="user-cell">
                         <div class="user-info">
@@ -132,11 +131,11 @@
                     
                     <td class="actions-cell">
                         <div class="action-buttons">
-                            <button class="btn-icon" onclick="editUser({{ usuario.id }})" title="Editar usuario">
+                            <button class="btn-icon btn-edit" data-id="{{ usuario.id }}" title="Editar usuario">
                                 <i class="fas fa-pen"></i>
                             </button>
                             {% if user.perfil.rol == 'admin' and usuario.perfil.rol != 'admin' %}
-                            <button class="btn-icon danger" onclick="deleteUser({{ usuario.id }}, '{{ usuario.username }}')" title="Eliminar usuario">
+                            <button class="btn-icon danger btn-delete" data-id="{{ usuario.id }}" data-username="{{ usuario.username }}" title="Eliminar usuario">
                                 <i class="fas fa-trash"></i>
                             </button>
                             {% endif %}
@@ -150,7 +149,7 @@
                             <i class="fas fa-users-slash"></i>
                             <h3>No hay usuarios registrados</h3>
                             <p>Comienza creando un nuevo usuario</p>
-                            <button class="btn-primary" onclick="addUser()">
+                            <button class="btn-primary" id="btnAddUserEmpty">
                                 <i class="fas fa-plus"></i>
                                 Crear Usuario
                             </button>
@@ -166,280 +165,22 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Variables globales para el JavaScript -->
 <script>
-// ========================================
-// BÚSQUEDA EN TIEMPO REAL
-// ========================================
-document.getElementById('searchInput').addEventListener('input', function(e) {
-    const searchTerm = e.target.value.toLowerCase().trim();
-    const rows = document.querySelectorAll('.user-row');
-    
-    rows.forEach(row => {
-        const name = row.dataset.name;
-        const email = row.dataset.email;
-        
-        if (name.includes(searchTerm) || email.includes(searchTerm)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-});
-
-// ========================================
-// FILTROS POR ROL
-// ========================================
-document.querySelectorAll('.filter-tab').forEach(tab => {
-    tab.addEventListener('click', function() {
-        // Actualizar estado activo
-        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        
-        const filter = this.dataset.filter;
-        const rows = document.querySelectorAll('.user-row');
-        
-        rows.forEach(row => {
-            if (filter === 'all' || row.dataset.role === filter) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
-});
-
-// ========================================
-// CREAR USUARIO
-// ========================================
-function addUser() {
-    Swal.fire({
-        title: 'Crear Nuevo Usuario',
-        html: `
-            <div class="swal-form">
-                <div class="swal-field">
-                    <label><i class="fas fa-user"></i> Nombre completo</label>
-                    <input id="swal-name" class="swal2-input" placeholder="Ej: Juan Pérez">
-                </div>
-                <div class="swal-field">
-                    <label><i class="fas fa-at"></i> Nombre de usuario</label>
-                    <input id="swal-username" class="swal2-input" placeholder="Ej: juanperez">
-                </div>
-                <div class="swal-field">
-                    <label><i class="fas fa-envelope"></i> Email</label>
-                    <input id="swal-email" class="swal2-input" type="email" placeholder="Ej: juan@email.com">
-                </div>
-                <div class="swal-field">
-                    <label><i class="fas fa-lock"></i> Contraseña</label>
-                    <input id="swal-password" class="swal2-input" type="password" placeholder="Mínimo 8 caracteres">
-                </div>
-                <div class="swal-field">
-                    <label><i class="fas fa-tag"></i> Rol</label>
-                    <select id="swal-role" class="swal2-select">
-                        <option value="">Selecciona un rol</option>
-                        <option value="moderador">Moderador</option>
-                        <option value="admin">Administrador</option>
-                    </select>
-                </div>
-            </div>
-        `,
-        confirmButtonText: '<i class="fas fa-plus"></i> Crear Usuario',
-        confirmButtonColor: '#4F46E5',
-        showCancelButton: true,
-        cancelButtonText: 'Cancelar',
-        preConfirm: () => {
-            const name = document.getElementById("swal-name").value.trim();
-            const username = document.getElementById("swal-username").value.trim();
-            const email = document.getElementById("swal-email").value.trim();
-            const password = document.getElementById("swal-password").value;
-            const role = document.getElementById("swal-role").value;
-            
-            if (!name || !username || !email || !password || !role) {
-                Swal.showValidationMessage("Todos los campos son obligatorios");
-                return false;
-            }
-            
-            if (password.length < 8) {
-                Swal.showValidationMessage("La contraseña debe tener al menos 8 caracteres");
-                return false;
-            }
-            
-            return { name, username, email, password, role };
-        }
-    }).then(result => {
-        if (result.isConfirmed) {
-            fetch("{% url 'crear_usuario' %}", {
-                method: "POST",
-                headers: { 
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": "{{ csrf_token }}"
-                },
-                body: JSON.stringify(result.value)
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        title: '¡Usuario Creado!',
-                        text: data.message,
-                        icon: 'success',
-                        confirmButtonColor: '#4F46E5'
-                    }).then(() => location.reload());
-                } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: data.message,
-                        icon: 'error',
-                        confirmButtonColor: '#4F46E5'
-                    });
-                }
-            });
-        }
-    });
-}
-
-// ========================================
-// EDITAR USUARIO
-// ========================================
-function editUser(id) {
-    fetch(`/usuarios/${id}/editar/`)
-        .then(r => r.json())
-        .then(data => {
-            Swal.fire({
-                title: 'Editar Usuario',
-                html: `
-                    <div class="swal-form">
-                        <div class="swal-field">
-                            <label><i class="fas fa-user"></i> Nombre completo</label>
-                            <input id="edit-name" class="swal2-input" value="${data.name}">
-                        </div>
-                        <div class="swal-field">
-                            <label><i class="fas fa-envelope"></i> Email</label>
-                            <input id="edit-email" class="swal2-input" type="email" value="${data.email}">
-                        </div>
-                        <div class="swal-field">
-                            <label><i class="fas fa-tag"></i> Rol</label>
-                            <select id="edit-role" class="swal2-select">
-                                <option value="usuario" ${data.role === "usuario" ? "selected" : ""}>Usuario</option>
-                                <option value="moderador" ${data.role === "moderador" ? "selected" : ""}>Moderador</option>
-                                <option value="admin" ${data.role === "admin" ? "selected" : ""}>Administrador</option>
-                            </select>
-                        </div>
-                    </div>
-                `,
-                confirmButtonText: '<i class="fas fa-save"></i> Guardar Cambios',
-                confirmButtonColor: '#4F46E5',
-                showCancelButton: true,
-                cancelButtonText: 'Cancelar',
-                preConfirm: () => {
-                    const name = document.getElementById('edit-name').value.trim();
-                    const email = document.getElementById('edit-email').value.trim();
-                    const role = document.getElementById('edit-role').value;
-                    
-                    if (!name || !email || !role) {
-                        Swal.showValidationMessage("Todos los campos son obligatorios");
-                        return false;
-                    }
-                    
-                    return { name, email, role };
-                }
-            }).then(result => {
-                if (result.isConfirmed) {
-                    fetch(`/usuarios/${id}/editar/`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": "{{ csrf_token }}"
-                        },
-                        body: JSON.stringify(result.value)
-                    })
-                    .then(r => r.json())
-                    .then(data => {
-                        Swal.fire({
-                            title: '¡Actualizado!',
-                            text: data.message,
-                            icon: 'success',
-                            confirmButtonColor: '#4F46E5'
-                        }).then(() => location.reload());
-                    });
-                }
-            });
-        });
-}
-
-// ========================================
-// ELIMINAR USUARIO
-// ========================================
-function deleteUser(id, username) {
-    Swal.fire({
-        title: '¿Eliminar Usuario?',
-        html: `
-            <p>Estás a punto de eliminar permanentemente a <strong>@${username}</strong>.</p>
-            <p class="warning-text">Esta acción no se puede deshacer.</p>
-        `,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: '<i class="fas fa-trash"></i> Sí, Eliminar',
-        confirmButtonColor: '#DC2626',
-        cancelButtonText: 'Cancelar'
-    }).then(result => {
-        if (result.isConfirmed) {
-            fetch(`/usuarios/${id}/eliminar/`, {
-                method: "DELETE",
-                headers: { "X-CSRFToken": "{{ csrf_token }}" }
-            })
-            .then(r => r.json())
-            .then(data => {
-                Swal.fire({
-                    title: 'Usuario Eliminado',
-                    text: data.message,
-                    icon: 'success',
-                    confirmButtonColor: '#4F46E5'
-                }).then(() => location.reload());
-            });
-        }
-    });
-}
+    // Variables de configuración
+    window.APP_CONFIG = {
+        urls: {
+            crearUsuario: "{% url 'crear_usuario' %}",
+            editarUsuario: "/usuarios/",
+            eliminarUsuario: "/usuarios/"
+        },
+        csrfToken: "{{ csrf_token }}"
+    };
 </script>
 
-<style>
-/* Estilos adicionales para SweetAlert */
-.swal-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    text-align: left;
-}
+<!-- Dependencias -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-.swal-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.swal-field label {
-    font-weight: 600;
-    color: #374151;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.swal-field label i {
-    color: #4F46E5;
-    width: 20px;
-}
-
-.swal2-input, .swal2-select {
-    width: 100% !important;
-    margin: 0 !important;
-}
-
-.warning-text {
-    color: #DC2626;
-    font-size: 0.9rem;
-    margin-top: 0.5rem;
-}
-</style>
+<!-- Script principal -->
+<script src="{% static 'js/usuarios.js' %}"></script>
 {% endblock %}

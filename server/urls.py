@@ -1,22 +1,19 @@
 from django.urls import path, include  # ← Agregar include
 from . import views
 from django.contrib.auth import views as auth_views
-from rest_framework.routers import DefaultRouter  # ← Nuevo
-from .api_views import (  # ← Nuevo archivo
+from rest_framework.routers import DefaultRouter 
+from .api_views import (  
     ReporteViewSet, 
     consultar_reportes_api, 
     estadisticas_api, 
     reportes_cercanos_api
 )
 
-# Router genera URLs automáticamente para el ViewSet
 router = DefaultRouter()
 router.register(r'reportes', ReporteViewSet)
 
 urlpatterns = [
-    # ==========================================
-    # RUTAS PÚBLICAS (Tus rutas actuales)
-    # ==========================================
+
     path('', views.index, name='index'),
     path('detalle_reporte_mapa/<int:id>/', views.detalle, name='detalle_reporte_mapa'),
     path('nuevo/', views.nuevo_reporte, name='nuevo_reporte'),
@@ -26,9 +23,6 @@ urlpatterns = [
     path('ayuda/', views.ayuda, name='ayuda'),
     path('acerca/', views.acerca, name='acerca'),
 
-    # ==========================================
-    # AUTENTICACIÓN
-    # ==========================================
     path('registro/', views.registro, name='registro'),
     path('logout/', views.cerrar_sesion, name='logout'),
     path("login/", views.login_view, name="login"),
@@ -45,9 +39,6 @@ urlpatterns = [
     path('reset/completo/',auth_views.PasswordResetCompleteView.as_view(template_name='auth/password_reset_complete.html'),name='password_reset_complete'),
     path("api/check-email/", views.check_email, name="check_email"),
 
-    # ==========================================
-    # MODERACIÓN
-    # ==========================================
     path('moderador/', views.panel_moderador, name='panel_moderador'),
     path('detalles/<int:id>/', views.detalles_reporte, name='detalles_reporte'),
     path('aprobar/<int:id>/', views.aprobar_reporte, name='aprobar_reporte'),
@@ -60,32 +51,20 @@ urlpatterns = [
     path('eliminar-reporte/<int:id>/', views.eliminar_reporte, name='eliminar_reporte'),
     path('exportar_csv/', views.exportar_csv, name='exportar_csv'),
 
-    # ==========================================
-    # ADMINISTRACIÓN DE USUARIOS
-    # ==========================================
     path('usuarios/', views.usuarios_list, name='usuarios_list'),
     path('usuarios/crear/', views.crear_usuario, name='crear_usuario'),
     path('usuarios/<int:user_id>/data/', views.usuario_data, name='usuario_data'),
     path('usuarios/<int:user_id>/editar/', views.editar_usuario, name='editar_usuario'),
     path('usuarios/<int:user_id>/eliminar/', views.eliminar_usuario, name='eliminar_usuario'),
 
-    # ==========================================
-    # LEGALES
-    # ==========================================
     path('privacidad/', views.privacidad, name='privacidad'),
     path('terminos/', views.terminos, name='terminos'),
 
-    # ==========================================
-    # CONSULTA PÚBLICA (Tus APIs actuales)
-    # ==========================================
     path('consultar/', views.consultar_reporte, name='consultar_reporte'),
     path('api/consultar-reportes/', views.consultar_reportes_ajax, name='consultar_reportes_ajax'),
     path('api/reporte/<int:reporte_id>/', views.detalle_reporte_ajax, name='detalle_reporte_ajax'),
 
-    # ==========================================
-    # 🆕 NUEVA API REST CON DRF
-    # ==========================================
-    path('api/v1/', include(router.urls)),              # GET, POST, PUT, DELETE /api/v1/reportes/
+    path('api/v1/', include(router.urls)),             
     path('api/v1/consultar/', consultar_reportes_api, name='api_v1_consultar'),
     path('api/v1/estadisticas/', estadisticas_api, name='api_v1_estadisticas'),
     path('api/v1/reportes-cercanos/', reportes_cercanos_api, name='api_v1_cercanos'),

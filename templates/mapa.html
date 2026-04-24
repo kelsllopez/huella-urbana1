@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="{% static 'css/mapa.css' %}">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/mapa-custom.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -31,7 +32,7 @@
 
             <!-- BOTÓN GPS DENTRO DEL PANEL -->
             <div class="filter-section">
-                <button class="gps-btn-sidebar" id="gpsBtn" onclick="irAMiUbicacion()">
+                <button class="gps-btn-sidebar" id="gpsBtn" onclick="MapaApp.irAMiUbicacion()">
                     <i class="fas fa-location-arrow"></i> Usar mi ubicación actual
                 </button>
             </div>
@@ -72,7 +73,7 @@
                 </div>
             </div>
 
-            <!-- 🆕 FILTRO POR TIPO DE VÍCTIMA -->
+            <!-- FILTRO POR TIPO DE VÍCTIMA -->
             <div class="filter-section">
                 <div class="filter-title">
                     <i class="fas fa-paw"></i> Tipo de Víctima
@@ -90,7 +91,7 @@
     </div>
 
     <!-- BOTÓN TOGGLE SIDEBAR -->
-    <button class="toggle-sidebar" id="toggleBtn" onclick="toggleSidebar()">
+    <button class="toggle-sidebar" id="toggleBtn" onclick="MapaApp.toggleSidebar()">
         <i class="fas fa-chevron-left" id="toggleIcon"></i>
     </button>
 
@@ -100,30 +101,30 @@
     </div>
 
     <!-- MODAL DE DETALLES -->
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <div class="modal-overlay" id="modalOverlay" onclick="MapaApp.closeModal()">
         <div class="modal-container-tabs" onclick="event.stopPropagation()">
             <div class="modal-header-tabs">
                 <div class="modal-title-section">
                     <h4><i class="fas fa-file-alt"></i> <span id="modal-titulo-header">Detalles del Reporte</span></h4>
                     <p class="modal-date"><i class="fas fa-calendar-alt"></i> <span id="modal-fecha-header"></span></p>
                 </div>
-                <button class="modal-close-tabs" onclick="closeModal()">&times;</button>
+                <button class="modal-close-tabs" onclick="MapaApp.closeModal()">&times;</button>
             </div>
 
             <div class="tabs-navigation">
-                <button class="tab-btn active" onclick="switchModalTab(event, 'tab-incidente')">
+                <button class="tab-btn active" onclick="MapaApp.switchModalTab(event, 'tab-incidente')">
                     <i class="fas fa-paw"></i>
                     <span>Información</span>
                 </button>
-                <button class="tab-btn" onclick="switchModalTab(event, 'tab-fotos')">
+                <button class="tab-btn" onclick="MapaApp.switchModalTab(event, 'tab-fotos')">
                     <i class="fas fa-camera"></i>
                     <span>Fotos</span>
                 </button>
-                <button class="tab-btn" onclick="switchModalTab(event, 'tab-ubicacion')">
+                <button class="tab-btn" onclick="MapaApp.switchModalTab(event, 'tab-ubicacion')">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Ubicación</span>
                 </button>
-                <button class="tab-btn" onclick="switchModalTab(event, 'tab-descripcion')">
+                <button class="tab-btn" onclick="MapaApp.switchModalTab(event, 'tab-descripcion')">
                     <i class="fas fa-align-left"></i>
                     <span>Descripción</span>
                 </button>
@@ -185,7 +186,7 @@
             </div>
 
             <div class="modal-footer-tabs">
-                <button class="btn-close-modal" onclick="closeModal()">
+                <button class="btn-close-modal" onclick="MapaApp.closeModal()">
                     <i class="fas fa-times"></i> Cerrar
                 </button>
             </div>
@@ -193,274 +194,14 @@
     </div>
 
     <!-- LIGHTBOX PARA IMÁGENES -->
-    <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+    <div class="lightbox-overlay" id="lightboxOverlay" onclick="MapaApp.closeLightbox()">
         <div class="lightbox-content" onclick="event.stopPropagation()">
-            <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+            <button class="lightbox-close" onclick="MapaApp.closeLightbox()">&times;</button>
             <img id="lightboxImg" src="" alt="Imagen ampliada">
         </div>
     </div>
 
 </div>
-
-<style>
-.modal-photos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    padding: 10px 0;
-}
-
-.modal-photo-item {
-    position: relative;
-    aspect-ratio: 1;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 2px solid #E5E7EB;
-}
-
-.modal-photo-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    border-color: #8B5CF6;
-}
-
-.modal-photo-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.modal-photo-item.censurada {
-    border-color: #F59E0B;
-}
-
-.modal-photo-img.blur {
-    filter: blur(15px);
-}
-
-.censored-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    gap: 5px;
-    backdrop-filter: blur(2px);
-}
-
-.censored-overlay i {
-    font-size: 2rem;
-    margin-bottom: 5px;
-}
-
-.censored-overlay span {
-    font-weight: 600;
-    font-size: 0.85rem;
-}
-
-.censored-overlay small {
-    font-size: 0.7rem;
-    opacity: 0.8;
-    margin-top: 5px;
-}
-
-.photo-hover-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(139, 92, 246, 0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-}
-
-.photo-hover-overlay i {
-    color: white;
-    font-size: 2rem;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.3s;
-}
-
-.modal-photo-item:hover .photo-hover-overlay {
-    background: rgba(139, 92, 246, 0.5);
-}
-
-.modal-photo-item:hover .photo-hover-overlay i {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* POPUP IMAGEN PIXELADA (CENSURADA) */
-.popup-blur-container {
-    position: relative;
-    margin: 8px 0;
-    cursor: pointer;
-}
-
-.popup-blur-img {
-    width: 100%;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    filter: blur(15px);
-}
-
-.popup-blur-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    white-space: nowrap;
-}
-
-/* MENSAJE DE IMAGEN OCULTA (CUANDO EL MODERADOR OCULTÓ LAS FOTOS) */
-.popup-hidden-message {
-    background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-    border: 2px solid #FCA5A5;
-    border-radius: 12px;
-    padding: 16px 12px;
-    margin: 10px 0;
-    text-align: center;
-}
-
-.popup-hidden-message i {
-    font-size: 2rem;
-    color: #DC2626;
-    margin-bottom: 8px;
-}
-
-.popup-hidden-message p {
-    margin: 5px 0;
-    color: #991B1B;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.popup-hidden-message small {
-    color: #7F1D1D;
-    font-size: 0.75rem;
-    opacity: 0.8;
-}
-
-/* SEVERITY BADGE */
-.severity-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.85rem;
-}
-
-.severity-badge.severity-grave {
-    background: #FEE2E2;
-    color: #DC2626;
-}
-
-.severity-badge.severity-moderado {
-    background: #FEF3C7;
-    color: #D97706;
-}
-
-.severity-badge.severity-leve {
-    background: #DBEAFE;
-    color: #2563EB;
-}
-
-/* ============================================================
-   FILTROS POR TIPO DE VÍCTIMA - COLORES PERSONALIZADOS
-   ============================================================ */
-.filter-chip[data-filter="persona"] {
-    background: #FEE2E2;
-    border-color: #EF4444;
-    color: #DC2626;
-}
-
-.filter-chip[data-filter="persona"]:hover,
-.filter-chip[data-filter="persona"].active {
-    background: #EF4444;
-    border-color: #EF4444;
-    color: white;
-}
-
-.filter-chip[data-filter="perro"] {
-    background: #EDE9FE;
-    border-color: #8B5CF6;
-    color: #7C3AED;
-}
-
-.filter-chip[data-filter="perro"]:hover,
-.filter-chip[data-filter="perro"].active {
-    background: #8B5CF6;
-    border-color: #8B5CF6;
-    color: white;
-}
-
-.filter-chip[data-filter="gato"] {
-    background: #D1FAE5;
-    border-color: #10B981;
-    color: #059669;
-}
-
-.filter-chip[data-filter="gato"]:hover,
-.filter-chip[data-filter="gato"].active {
-    background: #10B981;
-    border-color: #10B981;
-    color: white;
-}
-
-.filter-chip[data-filter="otro"] {
-    background: #FEF3C7;
-    border-color: #F59E0B;
-    color: #D97706;
-}
-
-.filter-chip[data-filter="otro"]:hover,
-.filter-chip[data-filter="otro"].active {
-    background: #F59E0B;
-    border-color: #F59E0B;
-    color: white;
-}
-
-/* Efecto de actualización del contador */
-#totalIncidentes {
-    transition: transform 0.2s ease;
-    display: inline-block;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .modal-photos-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 480px) {
-    .modal-photos-grid {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
 {% endblock %}
 
 {% block extra_scripts %}
@@ -468,514 +209,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-// ========================= VARIABLES GLOBALES =========================
-let map, markers = [], reportesData = [];
-let filtros = { tiempo: "all", gravedad: "all-severity", victima: "all-victim" };
-let sidebarVisible = true;
-let totalIncidentesElement = document.getElementById("totalIncidentes");
-
-// ========================= INICIALIZACIÓN =========================
-document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        document.getElementById("loader").style.display = "none";
-        initMap();
-    }, 800);
-});
-
-// ========================= INICIALIZAR MAPA (CartoDB Voyager) =========================
-function initMap() {
-    map = L.map('map', {
-        zoomControl: true,
-        attributionControl: true
-    }).setView([-33.4489, -70.6693], 6);
-
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 20,
-        minZoom: 2
-    }).addTo(map);
-
-    // Debug: Ver qué URL se está llamando
-    console.log("Cargando reportes desde: {% url 'mapa' %}");
-    
-    fetch("{% url 'mapa' %}", { headers: { "x-requested-with": "XMLHttpRequest" } })
-        .then(r => r.json())
-        .then(data => {
-            console.log("Datos recibidos:", data);
-            console.log("Primer reporte - tipo_animal:", data[0]?.tipo_animal);
-            console.log("Primer reporte - tipo_animal_display:", data[0]?.tipo_animal_display);
-            reportesData = data;
-            document.getElementById("totalIncidentes").textContent = data.length;
-            renderMarkers(reportesData);
-            destacarReporteSiExiste();
-        })
-        .catch(err => console.error("Error cargando datos:", err));
-}
-
-// ========================= DESTACAR REPORTE DESDE CONSULTA =========================
-function destacarReporteSiExiste() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const reporteId = urlParams.get('reporte');
-    const reporteDestacado = sessionStorage.getItem('reporteDestacado');
-    const reporteLat = sessionStorage.getItem('reporteLat');
-    const reporteLng = sessionStorage.getItem('reporteLng');
-    
-    const idParaDestacar = reporteId || reporteDestacado;
-    
-    if (idParaDestacar) {
-        setTimeout(() => {
-            const reporte = reportesData.find(r => r.id == idParaDestacar);
-            
-            if (reporte) {
-                map.setView([reporte.lat, reporte.lon], 16);
-                
-                markers.forEach(marker => {
-                    const markerPos = marker.getLatLng();
-                    if (Math.abs(markerPos.lat - reporte.lat) < 0.001 && 
-                        Math.abs(markerPos.lng - reporte.lon) < 0.001) {
-                        marker.openPopup();
-                    }
-                });
-                
-                Swal.fire({
-                    icon: 'success',
-                    title: '📍 Reporte encontrado',
-                    text: `"${reporte.titulo}"`,
-                    timer: 2500,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
-                
-            } else if (reporteLat && reporteLng) {
-                const lat = parseFloat(reporteLat);
-                const lng = parseFloat(reporteLng);
-                
-                if (!isNaN(lat) && !isNaN(lng)) {
-                    map.setView([lat, lng], 16);
-                    
-                    Swal.fire({
-                        icon: 'info',
-                        title: '📍 Ubicación del reporte',
-                        text: 'Este reporte aún no ha sido aprobado, por lo que no aparece en el mapa público.',
-                        confirmButtonColor: '#8B5CF6'
-                    });
-                }
-            }
-            
-            sessionStorage.removeItem('reporteDestacado');
-            sessionStorage.removeItem('reporteLat');
-            sessionStorage.removeItem('reporteLng');
-            
-        }, 500);
-    }
-}
-
-// ========================= GPS: IR A MI UBICACIÓN =========================
-function irAMiUbicacion() {
-    const btn = document.getElementById('gpsBtn');
-    
-    if (!navigator.geolocation) {
-        Swal.fire({ icon: 'error', title: 'GPS no soportado', text: 'Tu navegador no soporta geolocalización.' });
-        return;
-    }
-
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Obteniendo...';
-    btn.disabled = true;
-    
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            map.setView([lat, lng], 15);
-            btn.innerHTML = '<i class="fas fa-location-arrow"></i> Usar mi ubicación actual';
-            btn.disabled = false;
-            Swal.fire({ icon: 'success', title: 'Ubicación encontrada', timer: 1500, showConfirmButton: false });
-        },
-        (error) => {
-            btn.innerHTML = '<i class="fas fa-location-arrow"></i> Usar mi ubicación actual';
-            btn.disabled = false;
-            let msg = 'No se pudo obtener tu ubicación.';
-            if (error.code === 1) msg = 'Permiso de ubicación denegado.';
-            Swal.fire({ icon: 'error', title: 'Error de GPS', text: msg });
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-    );
-}
-
-// ========================= RENDERIZAR MARCADORES =========================
-function renderMarkers(data) {
-    console.log("Renderizando marcadores, cantidad:", data.length);
-    markers.forEach(m => map.removeLayer(m));
-    markers = [];
-    if (data.length === 0) {
-        // Mostrar mensaje si no hay datos
-        const emptyMsg = L.popup()
-            .setLatLng([-33.4489, -70.6693])
-            .setContent('<div style="text-align:center;padding:10px;"><i class="fas fa-info-circle"></i> No hay incidentes con los filtros seleccionados.</div>')
-            .openOn(map);
-        return;
-    }
-    data.forEach(rep => addMarker(rep));
-}
-
-function addMarker(rep) {
-    const color = rep.gravedad === "grave" ? "red" : rep.gravedad === "moderado" ? "orange" : "blue";
-    const icon = L.icon({
-        iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41]
-    });
-
-    const todasLasFotosOcultas = rep.todas_fotos_ocultas || false;
-    const estaCensurada = rep.foto_censurada || false;
-    const fotoUrl = rep.foto || '';
-    
-    // Icono según tipo de víctima para mostrar en el popup
-    let victimIcon = '';
-    let victimDisplay = rep.tipo_animal_display || rep.tipo_animal || 'No especificado';
-    if (rep.tipo_animal === 'persona') victimIcon = '👤';
-    else if (rep.tipo_animal === 'perro') victimIcon = '🐕';
-    else if (rep.tipo_animal === 'gato') victimIcon = '🐈';
-    else victimIcon = '🐾';
-    
-    let popupContent = `<strong>${victimIcon} ${rep.titulo}</strong>`;
-    
-    if (todasLasFotosOcultas) {
-        popupContent += `
-            <div class="popup-hidden-message">
-                <i class="fas fa-ban"></i>
-                <p><strong>Imágenes no disponibles</strong></p>
-                <p>Este reporte contiene material que ha sido retirado por nuestros moderadores.</p>
-                <small><i class="fas fa-shield-alt"></i> Huella Urbana - Contenido moderado</small>
-            </div>
-        `;
-    }
-    else if (fotoUrl && estaCensurada) {
-        popupContent += `
-            <div class="popup-blur-container" onclick="verImagenCensurada('${fotoUrl}'); return false;">
-                <img src="${fotoUrl}" class="popup-blur-img">
-                <div class="popup-blur-overlay">
-                    <i class="fas fa-eye-slash"></i> Contenido sensible
-                </div>
-            </div>
-        `;
-    }
-    else if (fotoUrl) {
-        popupContent += `
-            <div style="cursor: pointer;" onclick="openLightbox('${fotoUrl}'); return false;">
-                <img src="${fotoUrl}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px; margin: 8px 0;">
-            </div>
-        `;
-    }
-    else {
-        popupContent += `
-            <div style="background: #F3F4F6; border-radius: 8px; padding: 12px; margin: 8px 0; text-align: center;">
-                <i class="fas fa-camera" style="font-size: 1.5rem; color: #9CA3AF; margin-bottom: 5px;"></i>
-                <p style="color: #6B7280; font-size: 0.85rem; margin: 0;">Este reporte no contiene fotografías</p>
-            </div>
-        `;
-    }
-    
-    popupContent += `
-        <b>📅 Fecha:</b> ${rep.fecha}<br>
-        <b>🎯 Víctima:</b> ${victimDisplay}<br><br>
-        <button onclick="openModal(${rep.id}); map.closePopup();" style="background:#8B5CF6; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; width:100%;">Ver Detalles</button>
-    `;
-
-    const marker = L.marker([rep.lat, rep.lon], { icon })
-        .bindPopup(popupContent)
-        .addTo(map);
-    markers.push(marker);
-}
-
-// ========================= VER IMAGEN CENSURADA =========================
-function verImagenCensurada(src) {
-    map.closePopup();
-    
-    setTimeout(() => {
-        Swal.fire({
-            title: '⚠️ Contenido Sensible',
-            html: `
-                <div style="text-align: center;">
-                    <p style="margin-bottom: 15px;">Esta imagen ha sido marcada como contenido sensible por los moderadores.</p>
-                    <p style="font-size: 0.9rem; color: #6B7280; margin-bottom: 15px;">¿Deseas verla sin censura?</p>
-                </div>
-            `,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#F59E0B',
-            cancelButtonColor: '#6B7280',
-            confirmButtonText: '<i class="fas fa-eye"></i> Ver imagen',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                openLightbox(src);
-            }
-        });
-    }, 100);
-}
-
-function verImagenCensuradaDesdeModal(src) {
-    closeModal();
-    
-    setTimeout(() => {
-        Swal.fire({
-            title: '⚠️ Contenido Sensible',
-            html: `
-                <div style="text-align: center;">
-                    <p style="margin-bottom: 15px;">Esta imagen ha sido marcada como contenido sensible por los moderadores.</p>
-                    <p style="font-size: 0.9rem; color: #6B7280; margin-bottom: 15px;">¿Deseas verla sin censura?</p>
-                </div>
-            `,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#F59E0B',
-            cancelButtonColor: '#6B7280',
-            confirmButtonText: '<i class="fas fa-eye"></i> Ver imagen',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                openLightbox(src);
-            }
-        });
-    }, 150);
-}
-
-// ========================= MODAL =========================
-function openModal(id) {
-    const rep = reportesData.find(r => r.id === id);
-    if (!rep) return;
-
-    document.getElementById("modal-titulo-header").textContent = rep.titulo || "Detalles del Reporte";
-    document.getElementById("modal-fecha-header").textContent = rep.fecha || "";
-    document.getElementById("modal-tipo-animal").textContent = rep.tipo_animal_display || rep.tipo_animal || "No especificado";
-    document.getElementById("modal-cantidad-perros").textContent = rep.cantidad_perros || "No especificado";
-    
-    const gravedadTexto = { 'leve': 'Leve', 'moderado': 'Moderado', 'grave': 'Grave' }[rep.gravedad] || "Leve";
-    document.getElementById("modal-gravedad").innerHTML = `<span class="severity-badge severity-${rep.gravedad}">${gravedadTexto}</span>`;
-    
-    document.getElementById("modal-direccion").textContent = rep.direccion || "No especificada";
-    document.getElementById("modal-ciudad-region").textContent = rep.ciudad && rep.region ? `${rep.ciudad}, ${rep.region}` : (rep.ciudad || rep.region || "No especificado");
-    document.getElementById("modal-coordenadas").textContent = rep.lat && rep.lon ? `${rep.lat}, ${rep.lon}` : "No disponibles";
-    document.getElementById("modal-map-link").href = `https://www.google.com/maps?q=${rep.lat},${rep.lon}`;
-    document.getElementById("modal-descripcion").textContent = rep.descripcion || "Sin descripción.";
-
-    cargarFotosModal(rep);
-
-    document.getElementById("modalOverlay").style.display = "block";
-    document.body.style.overflow = "hidden";
-    switchModalTabAuto('tab-incidente');
-}
-
-function cargarFotosModal(reporte) {
-    const container = document.getElementById("modal-fotos-container");
-    
-    if (reporte.todas_fotos_ocultas) {
-        container.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px; background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%); border-radius: 16px; border: 2px solid #FCA5A5;">
-                <i class="fas fa-ban" style="font-size: 3.5rem; color: #DC2626; margin-bottom: 15px; opacity: 0.8;"></i>
-                <h4 style="color: #991B1B; margin-bottom: 10px; font-weight: 700;">Imágenes no disponibles</h4>
-                <p style="color: #7F1D1D; margin-bottom: 5px;">Este reporte contiene material que ha sido retirado por nuestros moderadores.</p>
-                <p style="color: #7F1D1D; font-size: 0.85rem;">Las imágenes no cumplen con nuestras políticas de contenido.</p>
-                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #FCA5A5;">
-                    <small style="color: #991B1B;"><i class="fas fa-shield-alt"></i> Huella Urbana - Contenido moderado</small>
-                </div>
-            </div>
-        `;
-        return;
-    }
-    
-    if (!reporte.fotos || reporte.fotos.length === 0) {
-        container.innerHTML = `
-            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #6B7280;">
-                <i class="fas fa-camera" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
-                <p>No hay fotografías disponibles para este reporte.</p>
-            </div>
-        `;
-        return;
-    }
-    
-    let html = '';
-    reporte.fotos.forEach((foto, index) => {
-        const estaCensurada = foto.censurada || false;
-        const url = foto.url;
-        
-        if (estaCensurada) {
-            html += `
-                <div class="modal-photo-item censurada" onclick="verImagenCensuradaDesdeModal('${url}')">
-                    <img src="${url}" class="modal-photo-img blur">
-                    <div class="censored-overlay">
-                        <i class="fas fa-eye-slash"></i>
-                        <span>Contenido Sensible</span>
-                        <small>Click para ver</small>
-                    </div>
-                </div>
-            `;
-        } else {
-            html += `
-                <div class="modal-photo-item" onclick="openLightbox('${url}')">
-                    <img src="${url}" class="modal-photo-img">
-                    <div class="photo-hover-overlay">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                </div>
-            `;
-        }
-    });
-    
-    container.innerHTML = html;
-}
-
-function switchModalTabAuto(tabId) {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".tab-content-modal").forEach(c => c.classList.remove("active"));
-    document.getElementById(tabId).classList.add("active");
-}
-
-function switchModalTab(event, tabId) {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    event.currentTarget.classList.add("active");
-    document.querySelectorAll(".tab-content-modal").forEach(c => c.classList.remove("active"));
-    document.getElementById(tabId).classList.add("active");
-}
-
-function closeModal() {
-    document.getElementById("modalOverlay").style.display = "none";
-    document.body.style.overflow = "auto";
-}
-
-// ========================= LIGHTBOX =========================
-function openLightbox(src) {
-    document.getElementById("lightboxImg").src = src;
-    document.getElementById("lightboxOverlay").style.display = "flex";
-    document.body.style.overflow = "hidden";
-}
-
-function closeLightbox() {
-    document.getElementById("lightboxOverlay").style.display = "none";
-    document.body.style.overflow = "auto";
-}
-
-// ========================= FILTROS CORREGIDOS =========================
-// Esperar a que el DOM esté listo para asignar eventos
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("Inicializando filtros...");
-    
-    const filterChips = document.querySelectorAll(".filter-chip");
-    console.log("Filtros encontrados:", filterChips.length);
-    
-    filterChips.forEach(chip => {
-        chip.addEventListener("click", function(e) {
-            e.preventDefault();
-            const grupo = this.closest(".filter-section");
-            if (grupo) {
-                grupo.querySelectorAll(".filter-chip").forEach(x => x.classList.remove("active"));
-            }
-            this.classList.add("active");
-
-            const f = this.dataset.filter;
-            console.log("Filtro seleccionado:", f);
-            
-            if (['all','7d','30d','3m','6m','year'].includes(f)) {
-                filtros.tiempo = f;
-                console.log("Filtro tiempo actualizado:", filtros.tiempo);
-            }
-            if (['leve','moderado','grave','all-severity'].includes(f)) {
-                filtros.gravedad = f;
-                console.log("Filtro gravedad actualizado:", filtros.gravedad);
-            }
-            if (['persona','perro','gato','otro','all-victim'].includes(f)) {
-                filtros.victima = f;
-                console.log("Filtro víctima actualizado:", filtros.victima);
-            }
-
-            aplicarFiltros();
-        });
-    });
-});
-
-function aplicarFiltros() {
-    console.log("Aplicando filtros...");
-    console.log("Filtros actuales:", filtros);
-    console.log("Total reportes originales:", reportesData.length);
-    
-    let lista = [...reportesData];
-
-    // FILTRO POR GRAVEDAD
-    if (filtros.gravedad !== 'all-severity') {
-        const antes = lista.length;
-        lista = lista.filter(r => r.gravedad === filtros.gravedad);
-        console.log(`Filtro gravedad (${filtros.gravedad}): ${antes} -> ${lista.length}`);
-    }
-
-    // FILTRO POR TIPO DE VÍCTIMA
-    if (filtros.victima !== 'all-victim') {
-        const antes = lista.length;
-        lista = lista.filter(r => r.tipo_animal === filtros.victima);
-        console.log(`Filtro víctima (${filtros.victima}): ${antes} -> ${lista.length}`);
-    }
-
-    // FILTRO POR TIEMPO
-    if (filtros.tiempo !== 'all') {
-        const ahora = new Date();
-        const antes = lista.length;
-        lista = lista.filter(r => {
-            const partes = r.fecha.split('/');
-            const fecha = new Date(partes[2], partes[1] - 1, partes[0]);
-            const diff = ahora - fecha;
-            const dias = diff / (1000 * 60 * 60 * 24);
-            if (filtros.tiempo === '7d') return dias <= 7;
-            if (filtros.tiempo === '30d') return dias <= 30;
-            if (filtros.tiempo === '3m') return dias <= 90;
-            if (filtros.tiempo === '6m') return dias <= 180;
-            if (filtros.tiempo === 'year') return fecha.getFullYear() === ahora.getFullYear();
-            return true;
-        });
-        console.log(`Filtro tiempo (${filtros.tiempo}): ${antes} -> ${lista.length}`);
-    }
-
-    console.log("Total después de filtros:", lista.length);
-    
-    // ACTUALIZAR CONTADOR con efecto visual
-    const totalFiltrados = lista.length;
-    if (totalIncidentesElement) {
-        totalIncidentesElement.textContent = totalFiltrados;
-        totalIncidentesElement.style.transform = 'scale(1.1)';
-        setTimeout(() => {
-            totalIncidentesElement.style.transform = 'scale(1)';
-        }, 200);
-    }
-    
-    renderMarkers(lista);
-}
-
-// ========================= TOGGLE SIDEBAR =========================
-function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const btn = document.getElementById("toggleBtn");
-    const icon = document.getElementById("toggleIcon");
-
-    if (sidebarVisible) {
-        sidebar.style.transform = "translateX(-380px)";
-        btn.style.left = "20px";
-        icon.className = "fas fa-chevron-right";
-    } else {
-        sidebar.style.transform = "translateX(0)";
-        btn.style.left = "380px";
-        icon.className = "fas fa-chevron-left";
-    }
-    sidebarVisible = !sidebarVisible;
-    setTimeout(() => map.invalidateSize(), 300);
-}
-
-// ========================= TECLA ESC =========================
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { 
-        closeLightbox(); 
-        closeModal(); 
-    }
-});
+    // Configuración inicial pasada desde Django
+    window.MAPA_CONFIG = {
+        apiUrl: "{% url 'mapa' %}",
+        reportesCount: {{ total_reportes|default:0 }},
+        urlNuevoReporte: "{% url 'nuevo_reporte' %}"
+    };
 </script>
+<script src="{% static 'js/mapa.js' %}"></script>
 {% endblock %}

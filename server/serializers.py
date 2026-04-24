@@ -1,5 +1,3 @@
-# server/serializers.py (archivo nuevo)
-
 from rest_framework import serializers
 from .models import NuevoReporte, Foto
 

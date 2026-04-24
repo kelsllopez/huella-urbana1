@@ -1,4 +1,3 @@
-// AUTO-CLOSE DJANGO MESSAGES
 setTimeout(() => {
     const alerts = document.querySelectorAll('.django-alert');
     alerts.forEach(alert => {
@@ -9,7 +8,6 @@ setTimeout(() => {
     });
 }, 5000);
 
-// TOGGLE PASSWORD
 function togglePassword(fieldId) {
     const field = document.getElementById(fieldId);
     const icon = field.nextElementSibling;
@@ -25,7 +23,6 @@ function togglePassword(fieldId) {
     }
 }
 
-// VALIDACIÓN NOMBRE DE USUARIO
 const nombreInput = document.getElementById('nombre');
 const nombreValidation = document.getElementById('nombreValidation');
 
@@ -57,7 +54,6 @@ nombreInput.addEventListener('input', function() {
     }
 });
 
-// EMAIL VALIDATION
 const emailInput = document.getElementById('email');
 const emailValidation = document.getElementById('emailValidation');
 
@@ -85,7 +81,6 @@ emailInput.addEventListener('input', function() {
     }
 });
 
-// PASSWORD STRENGTH
 const passwordInput = document.getElementById('password');
 const strengthIndicator = document.getElementById('passwordStrength');
 const passwordValidation = document.getElementById('passwordValidation');
@@ -165,7 +160,6 @@ passwordInput.addEventListener('input', function() {
     }
 });
 
-// PASSWORD MATCH VALIDATION
 const confirmPasswordInput = document.getElementById('confirmPassword');
 const passwordMatchMsg = document.getElementById('passwordMatch');
 
@@ -201,7 +195,6 @@ passwordInput.addEventListener('input', () => {
 });
 
 
-// VALIDACIÓN TÉRMINOS
 const termsCheckbox = document.getElementById('terms');
 const termsValidation = document.getElementById('termsValidation');
 const btnRegister = document.getElementById('btnRegister');
@@ -218,10 +211,8 @@ termsCheckbox.addEventListener('change', function() {
     }
 });
 
-// Inicialmente deshabilitado
 btnRegister.disabled = true;
 
-// SUBMIT FORM
 document.getElementById('registerForm').addEventListener('submit', function(e) {
     const nombre = nombreInput.value.trim();
     const email = emailInput.value.trim();
@@ -231,7 +222,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
 
     let isValid = true;
 
-    // Validación nombre
     if (nombre.length < 3 || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombre)) {
         nombreValidation.className = 'validation-message error';
         nombreValidation.innerHTML = '<i class="fas fa-times-circle"></i> Por favor, introduce un nombre válido (solo letras, mínimo 3 caracteres)';
@@ -239,7 +229,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         isValid = false;
     }
 
-    // Validación email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         emailValidation.className = 'validation-message error';
@@ -248,7 +237,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         isValid = false;
     }
 
-    // Validación contraseña
     if (password.length < 8) {
         passwordValidation.className = 'validation-message error';
         passwordValidation.innerHTML = '<i class="fas fa-times-circle"></i> La contraseña debe tener al menos 8 caracteres';
@@ -256,7 +244,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         isValid = false;
     }
 
-    // Validación contraseñas coinciden
     if (password !== confirmPassword) {
         passwordMatchMsg.className = 'validation-message error';
         passwordMatchMsg.innerHTML = '<i class="fas fa-times-circle"></i> Las contraseñas no coinciden. Por favor, verifica que ambas sean iguales';
@@ -264,7 +251,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         isValid = false;
     }
 
-    // Validación términos
     if (!terms) {
         termsValidation.className = 'validation-message error';
         termsValidation.innerHTML = '<i class="fas fa-times-circle"></i> Debes aceptar los términos y condiciones para continuar';
@@ -274,7 +260,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     if (!isValid) {
         e.preventDefault();
         
-        // Scroll al primer error
         const firstError = document.querySelector('.validation-message.error');
         if (firstError) {
             firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -283,8 +268,6 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         return false;
     }
 
-    // Si todo es válido, mostrar loading
-    // ✅ CAMBIO: Ya no prevenimos el envío, dejamos que Django lo maneje
     Swal.fire({
         title: 'Creando tu cuenta...',
         html: 'Por favor espera un momento',
@@ -294,10 +277,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         }
     });
     
-    // El formulario se enviará automáticamente a Django
 });
 
-// SOCIAL REGISTER
 function registerWithGoogle() {
     Swal.fire({
         icon: 'info',

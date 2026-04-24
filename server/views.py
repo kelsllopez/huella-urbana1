@@ -1,25 +1,6 @@
-"""
-Vistas principales de la aplicación.
-Organizadas por categorías:
-1. Importaciones
-2. Funciones auxiliares
-3. Vistas públicas
-4. Vistas de autenticación
-5. Vistas de reportes
-6. Vistas de estadísticas y mapa
-7. Vistas de moderación
-8. Vistas de administración de usuarios
-9. Vistas legales
-"""
-
-# ============================================
-# 1. IMPORTACIONES
-# ============================================
-
 import csv
 import json
 from datetime import datetime, timedelta
-
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib import messages
@@ -41,14 +22,9 @@ from django.utils import timezone
 from django.utils.dateformat import DateFormat
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-
 from .forms import *
 from .models import *
 
-
-# ============================================
-# 2. FUNCIONES AUXILIARES
-# ============================================
 
 def es_moderador(user):
     """Verifica si el usuario es moderador o admin."""
@@ -69,11 +45,6 @@ def es_mod_o_admin(user):
     if user.is_superuser or user.is_staff:
         return True
     return hasattr(user, "perfil") and user.perfil.rol in ["moderador", "admin"]
-
-
-# ============================================
-# 3. VISTAS PÚBLICAS
-# ============================================
 
 def index(request):
     """Página principal: muestra reportes verificados y estadísticas."""
@@ -145,7 +116,6 @@ def consultar_reportes_ajax(request):
         if not email:
             return JsonResponse({'success': False, 'message': 'Email requerido'})
 
-        # Buscar reportes NO anónimos asociados a este email
         reportes = NuevoReporte.objects.filter(
             email_reportante__iexact=email,
             anonimo=False
@@ -207,10 +177,6 @@ def detalle_reporte_ajax(request, reporte_id):
     except Exception as e:
         return JsonResponse({'success': False, 'message': str(e)})
 
-
-# ============================================
-# 4. VISTAS DE AUTENTICACIÓN
-# ============================================
 
 def login_view(request):
     """Vista de inicio de sesión."""
@@ -306,11 +272,6 @@ def check_email(request):
     exists = User.objects.filter(email=email).exists()
     return JsonResponse({"exists": exists})
 
-
-# ============================================
-# 5. VISTAS DE REPORTES
-# ============================================
-
 def nuevo_reporte(request):
     """Vista para crear un nuevo reporte."""
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
@@ -319,7 +280,6 @@ def nuevo_reporte(request):
         form = NuevoReporteForm(request.POST, request.FILES)
         fotografias = request.FILES.getlist('fotografias')
 
-        # Validación de imágenes
         imagen_errors = []
         if len(fotografias) > 5:
             imagen_errors.append('Máximo 5 fotografías permitidas.')
@@ -495,8 +455,8 @@ def mapa(request):
                     'id': r.id,
                     'titulo': r.titulo,
                     'descripcion': r.descripcion,
-                    'tipo_animal': r.tipo_animal,  # 🆕 AGREGAR ESTO (valor original: 'persona', 'perro', 'gato', 'otro')
-                    'tipo_animal_display': r.get_tipo_animal_display(),  # 🆕 Para mostrar nombre legible
+                    'tipo_animal': r.tipo_animal, 
+                    'tipo_animal_display': r.get_tipo_animal_display(), 
                     'cantidad_perros': r.cantidad_perros,
                     'gravedad': r.gravedad,
                     'hora': r.hora.strftime('%H:%M') if r.hora else '',
@@ -526,9 +486,6 @@ def estadisticas(request):
     """Vista de estadísticas y análisis de datos."""
     ciudad_filtro = request.GET.get('ciudad', None)
 
-    # ============================================
-    # 1. QUERY BASE
-    # ============================================
     if ciudad_filtro:
         base_queryset = NuevoReporte.objects.filter(
             estado='aprobado',
@@ -540,14 +497,10 @@ def estadisticas(request):
         base_queryset = NuevoReporte.objects.filter(estado='aprobado')
         titulo_ubicacion = "Todo Chile"
         filtrando_por_ciudad = False
-
-    # ============================================
-    # 2. MÉTRICAS BÁSICAS
-    # ============================================
     total_reportes = NuevoReporte.objects.count() if not ciudad_filtro else base_queryset.count()
     verificados = base_queryset.count()
     ataques_graves = base_queryset.filter(gravedad='grave').count()
-    ataques_personas = base_queryset.filter(tipo_animal='persona').count()  # 🆕 NUEVO
+    ataques_personas = base_queryset.filter(tipo_animal='persona').count()  
     
     # Ciudades afectadas
     ciudades_afectadas = base_queryset.exclude(
@@ -556,18 +509,9 @@ def estadisticas(request):
         ciudad=''
     ).values('ciudad').distinct().count()
 
-    # ============================================
-    # 3. DATOS POR GRAVEDAD
-    # ============================================
     graves = base_queryset.filter(gravedad='grave').count()
     moderados = base_queryset.filter(gravedad='moderado').count()
     leves = base_queryset.filter(gravedad='leve').count()
-
-    # ============================================
-    # 4. DATOS MENSUALES
-    # ============================================
-    from django.db.models import Count
-    from django.db.models.functions import TruncMonth
     
     mes_data = (
         base_queryset
@@ -584,9 +528,6 @@ def estadisticas(request):
             meses.append(DateFormat(m['mes']).format('M'))
             totales_mes.append(m['total'])
 
-    # ============================================
-    # 5. TOP CIUDADES
-    # ============================================
     top_ciudades = (
         base_queryset
         .exclude(ciudad__isnull=True)
@@ -605,9 +546,6 @@ def estadisticas(request):
     
     max_sector = sectores_ranking[0]['total'] if sectores_ranking else 1
 
-    # ============================================
-    # 6. TENDENCIA 12 MESES
-    # ============================================
     hace_12_meses = datetime.now() - timedelta(days=365)
     
     tendencia = (
@@ -626,10 +564,6 @@ def estadisticas(request):
             meses_tendencia.append(DateFormat(t['mes']).format('M'))
             totales_tendencia.append(t['total'])
 
-    # ============================================
-    # 7. DATOS POR HORA
-    # ============================================
-    from django.db.models.functions import ExtractHour
     
     horas_data = (
         base_queryset
@@ -665,10 +599,6 @@ def estadisticas(request):
     etiquetas_horas = list(rangos_horas.keys())
     totales_horas = list(rangos_horas.values())
 
-    # ============================================
-    # 8. DATOS POR DÍA DE LA SEMANA
-    # ============================================
-    from django.db.models.functions import ExtractWeekDay
     
     dias_data = (
         base_queryset
@@ -688,9 +618,6 @@ def estadisticas(request):
     totales_dias_ordenados = totales_dias[1:] + [totales_dias[0]]
     dias_ordenados = dias_nombres[1:] + [dias_nombres[0]]
 
-    # ============================================
-    # 9. MÉTRICAS DE CALIDAD
-    # ============================================
     total_verificados_global = NuevoReporte.objects.filter(estado='aprobado').count()
     total_global = NuevoReporte.objects.count()
     
@@ -699,14 +626,11 @@ def estadisticas(request):
     reportes_con_foto = base_queryset.filter(fotos__isnull=False).distinct().count()
     porcentaje_con_foto = round((reportes_con_foto / verificados) * 100) if verificados > 0 else 0
 
-    # ============================================
-    # 10. CONTEXTO
-    # ============================================
     context = {
         'total_reportes': total_reportes,
         'verificados': verificados,
         'ataques_graves': ataques_graves,
-        'ataques_personas': ataques_personas,  # 🆕 NUEVO
+        'ataques_personas': ataques_personas,  
         'sectores_afectados': ciudades_afectadas,
         'titulo_ubicacion': titulo_ubicacion,
         'filtrando_por_ciudad': filtrando_por_ciudad,
@@ -728,11 +652,6 @@ def estadisticas(request):
     }
 
     return render(request, 'estadisticas.html', context)
-
-
-# ============================================
-# 7. VISTAS DE MODERACIÓN
-# ============================================
 
 @login_required
 @user_passes_test(es_moderador)
@@ -919,11 +838,6 @@ def exportar_csv(request):
 
     return response
 
-
-# ============================================
-# 7.1 MODERACIÓN DE FOTOS
-# ============================================
-
 @login_required
 @user_passes_test(es_moderador)
 @require_http_methods(["POST"])
@@ -1039,11 +953,6 @@ def ocultar_todas_fotos(request, reporte_id):
         'status': 'ok',
         'mensaje': f'{fotos.count()} foto(s) ocultadas correctamente'
     })
-
-
-# ============================================
-# 8. VISTAS DE ADMINISTRACIÓN DE USUARIOS
-# ============================================
 
 @login_required
 def usuarios_list(request):
@@ -1217,11 +1126,6 @@ def eliminar_usuario(request, user_id):
         "success": True,
         "message": f"Usuario {username} eliminado correctamente"
     })
-
-
-# ============================================
-# 9. VISTAS LEGALES
-# ============================================
 
 def privacidad(request):
     """Página de Política de Privacidad."""
